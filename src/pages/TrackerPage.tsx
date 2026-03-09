@@ -5,11 +5,12 @@ import { RecommendedNext } from "@/components/RecommendedNext";
 import {
   ArrowRight, Activity, Moon, Zap, Brain, TrendingUp,
   Flame, CheckCircle, Heart, Target, Dumbbell,
-  Calendar, BarChart3, ChevronRight
+  Calendar, ChevronRight, ClipboardCheck
 } from "lucide-react";
 import { fadeUp } from "@/lib/animations";
 import trackerImg from "@/assets/tracker-flatlay.jpg";
 
+/* ── Data ── */
 const todaySummary = {
   energy: 7,
   soreness: 4,
@@ -22,6 +23,16 @@ const weeklyStats = [
   { label: "Matches", value: "1", target: "1", icon: Target, color: "text-accent" },
   { label: "Recovery", value: "2", target: "3", icon: Heart, color: "text-green-light" },
   { label: "Mindset", value: "4", target: "5", icon: Brain, color: "text-accent" },
+];
+
+const weeklyLoop = [
+  { day: "Mon", label: "Training Plan", icon: Dumbbell, type: "Train", active: true, done: true },
+  { day: "Tue", label: "Mobility Flow", icon: Heart, type: "Recover", active: false, done: true },
+  { day: "Wed", label: "Conditioning", icon: Activity, type: "Train", active: false, done: true },
+  { day: "Thu", label: "Mindset Reflection", icon: Brain, type: "Mindset", active: false, done: false },
+  { day: "Fri", label: "Light Preparation", icon: Zap, type: "Prepare", active: false, done: false },
+  { day: "Sat", label: "Match Day", icon: Target, type: "Match", active: false, done: false },
+  { day: "Sun", label: "Recovery Session", icon: Moon, type: "Recover", active: false, done: false },
 ];
 
 const recentSessions = [
@@ -60,7 +71,7 @@ export default function TrackerPage() {
         </div>
         <div className="relative container-content">
           <motion.div initial="hidden" animate="visible">
-            <motion.p variants={fadeUp} custom={0} className="badge-white mb-4">Member Dashboard</motion.p>
+            <motion.p variants={fadeUp} custom={0} className="badge-white mb-4">Player Dashboard</motion.p>
             <motion.h1 variants={fadeUp} custom={1} className="text-3xl md:text-5xl font-bold text-primary-foreground mb-3">
               Your Progress
             </motion.h1>
@@ -115,8 +126,46 @@ export default function TrackerPage() {
               </div>
             </motion.div>
 
-            {/* Weekly Stats with Progress Bars */}
+            {/* Weekly Player Loop */}
             <motion.div variants={fadeUp} custom={2} className="mb-8">
+              <h2 className="font-serif text-xl font-semibold mb-5">The Weekly Player Loop</h2>
+              <div className="card-premium-static overflow-hidden">
+                <div className="grid grid-cols-7">
+                  {weeklyLoop.map((d) => (
+                    <div
+                      key={d.day}
+                      className={`p-3 md:p-4 text-center border-r border-border/30 last:border-r-0 ${
+                        d.done ? "bg-green-subtle" : ""
+                      }`}
+                    >
+                      <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${
+                        d.done ? "text-green-light" : "text-muted-foreground"
+                      }`}>
+                        {d.day}
+                      </p>
+                      <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl mx-auto mb-2 flex items-center justify-center ${
+                        d.done ? "gradient-green" : "bg-muted"
+                      }`}>
+                        <d.icon className={`h-4 w-4 ${d.done ? "text-primary-foreground" : "text-muted-foreground"}`} />
+                      </div>
+                      <p className="text-[10px] md:text-xs font-medium hidden md:block">{d.label}</p>
+                      <p className={`text-[9px] font-bold uppercase tracking-wider mt-1 ${
+                        d.type === "Train" ? "text-green-light" :
+                        d.type === "Recover" ? "text-accent" :
+                        d.type === "Mindset" ? "text-accent" :
+                        d.type === "Match" ? "text-primary" :
+                        "text-muted-foreground"
+                      }`}>
+                        {d.type}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Weekly Stats */}
+            <motion.div variants={fadeUp} custom={3} className="mb-8">
               <h2 className="font-serif text-xl font-semibold mb-5">This Week's Activity</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {weeklyStats.map((s) => {
@@ -139,7 +188,7 @@ export default function TrackerPage() {
             </motion.div>
 
             {/* Consistency Chart */}
-            <motion.div variants={fadeUp} custom={3} className="mb-8">
+            <motion.div variants={fadeUp} custom={4} className="mb-8">
               <h2 className="font-serif text-xl font-semibold mb-5">Consistency Over Time</h2>
               <div className="card-premium-static p-5 md:p-6">
                 <div className="flex items-end gap-3 h-32">
@@ -159,9 +208,9 @@ export default function TrackerPage() {
               </div>
             </motion.div>
 
-            {/* Habits & Sessions side by side */}
+            {/* Habits & Sessions */}
             <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <motion.div variants={fadeUp} custom={4}>
+              <motion.div variants={fadeUp} custom={5}>
                 <h2 className="font-serif text-xl font-semibold mb-5">Habit Streaks</h2>
                 <div className="space-y-2.5">
                   {habits.map((h) => (
@@ -179,7 +228,7 @@ export default function TrackerPage() {
                 </div>
               </motion.div>
 
-              <motion.div variants={fadeUp} custom={5}>
+              <motion.div variants={fadeUp} custom={6}>
                 <h2 className="font-serif text-xl font-semibold mb-5">Recent Sessions</h2>
                 <div className="space-y-2.5">
                   {recentSessions.map((s) => (
@@ -212,7 +261,7 @@ export default function TrackerPage() {
 
           <RecommendedNext items={[
             { icon: Dumbbell, label: "Coach", title: "Get Today's Plan from Exercise Coach", href: "/exercise-coach" },
-            { icon: Brain, label: "Mindset", title: "Weekly Mindset Check-in", href: "/mindset-coach" },
+            { icon: ClipboardCheck, label: "Reflect", title: "Log a Match Reflection", href: "/match-reflection" },
             { icon: Calendar, label: "Training", title: "Browse Training Programs", href: "/training" },
           ]} />
         </div>

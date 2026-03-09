@@ -5,11 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SiteLayout from "./components/SiteLayout";
 import HomePage from "./pages/HomePage";
+import StartHerePage from "./pages/StartHerePage";
 import TrainingHub from "./pages/TrainingHub";
 import RecoveryHub from "./pages/RecoveryHub";
 import MindsetHub from "./pages/MindsetHub";
 import ExerciseCoach from "./pages/ExerciseCoach";
 import MindsetCoach from "./pages/MindsetCoach";
+import MatchReflectionPage from "./pages/MatchReflectionPage";
 import CommunityPage from "./pages/CommunityPage";
 import GearPage from "./pages/GearPage";
 import TrackerPage from "./pages/TrackerPage";
@@ -29,11 +31,13 @@ const App = () => (
         <Routes>
           <Route element={<SiteLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/start-here" element={<StartHerePage />} />
             <Route path="/training" element={<TrainingHub />} />
             <Route path="/recovery" element={<RecoveryHub />} />
             <Route path="/mindset" element={<MindsetHub />} />
             <Route path="/exercise-coach" element={<ExerciseCoach />} />
             <Route path="/mindset-coach" element={<MindsetCoach />} />
+            <Route path="/match-reflection" element={<MatchReflectionPage />} />
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/gear" element={<GearPage />} />
             <Route path="/tracker" element={<TrackerPage />} />
