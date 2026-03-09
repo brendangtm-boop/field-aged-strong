@@ -122,6 +122,12 @@ export default function TrainingHub() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Not sure where to start?</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">Let the Exercise Coach build a personalized plan based on your goals, fitness level, and schedule.</p>
           <Link to="/exercise-coach"><Button variant="gold" size="xl">Try Exercise Coach <ArrowRight className="h-4 w-4" /></Button></Link>
+
+          <RecommendedNext items={[
+            { icon: Heart, label: "Recovery", title: "Explore Recovery Hub", href: "/recovery" },
+            { icon: Brain, label: "Mindset", title: "Build Mental Resilience", href: "/mindset" },
+            { icon: Activity, label: "Dashboard", title: "Track Your Progress", href: "/tracker" },
+          ]} />
         </div>
       </section>
     </>

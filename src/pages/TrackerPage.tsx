@@ -208,6 +208,37 @@ export default function TrackerPage() {
               </div>
             </motion.div>
 
+            {/* My Season */}
+            <motion.div variants={fadeUp} custom={4.5} className="mb-8">
+              <h2 className="font-serif text-xl font-semibold mb-5">My Season</h2>
+              <div className="card-premium-static p-5 md:p-6">
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mb-6">
+                  {[
+                    { label: "Matches", value: "14" },
+                    { label: "Training Sessions", value: "38" },
+                    { label: "Goals / Assists", value: "3 / 5" },
+                    { label: "Recovery Sessions", value: "22" },
+                    { label: "Avg Confidence", value: "7.4" },
+                    { label: "Avg Energy", value: "6.8" },
+                  ].map(s => (
+                    <div key={s.label} className="text-center">
+                      <p className="stat-number text-2xl md:text-3xl mb-1">{s.value}</p>
+                      <p className="text-[10px] md:text-xs text-muted-foreground font-medium">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="pt-4 border-t border-border/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Season Progress</p>
+                    <p className="text-xs text-muted-foreground">Week 12 of 30</p>
+                  </div>
+                  <div className="progress-bar">
+                    <div className="progress-bar-fill" style={{ width: '40%' }} />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Habits & Sessions */}
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               <motion.div variants={fadeUp} custom={5}>

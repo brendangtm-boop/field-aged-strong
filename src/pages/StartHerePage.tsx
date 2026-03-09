@@ -127,7 +127,7 @@ export default function StartHerePage() {
                 custom={i}
                 variants={fadeUp}
                 onClick={() => setSelected(p.id === selected ? null : p.id)}
-                className={`text-left p-6 rounded-2xl border transition-all duration-300 ${
+                className={`relative text-left p-6 rounded-2xl border transition-all duration-300 ${
                   selected === p.id
                     ? "bg-primary/5 border-primary/30 shadow-elevated ring-2 ring-primary/20"
                     : "bg-card border-border/40 shadow-card hover:shadow-elevated hover:border-border"
