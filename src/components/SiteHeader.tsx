@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,22 +8,22 @@ const navItems = [
   {
     label: "Train",
     children: [
-      { label: "Training Hub", href: "/training" },
-      { label: "Exercise Coach", href: "/exercise-coach" },
+      { label: "Training Hub", href: "/training", desc: "Programs & workouts" },
+      { label: "Exercise Coach", href: "/exercise-coach", desc: "AI-powered sessions" },
     ],
   },
   {
     label: "Recover",
     children: [
-      { label: "Recovery Hub", href: "/recovery" },
-      { label: "Gear & Protection", href: "/gear" },
+      { label: "Recovery Hub", href: "/recovery", desc: "Mobility & protocols" },
+      { label: "Gear Guide", href: "/gear", desc: "Equipment & tools" },
     ],
   },
   {
     label: "Mindset",
     children: [
-      { label: "Mindset Hub", href: "/mindset" },
-      { label: "Mindset Coach", href: "/mindset-coach" },
+      { label: "Mindset Hub", href: "/mindset", desc: "Confidence & resilience" },
+      { label: "Mindset Coach", href: "/mindset-coach", desc: "Personal guidance" },
     ],
   },
   { label: "Community", href: "/community" },
@@ -34,20 +34,37 @@ const navItems = [
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  // Close mobile on route change
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border/50">
-      <div className="container-content flex items-center justify-between h-16 md:h-18">
+    <header
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled
+          ? "bg-card/90 backdrop-blur-xl border-b border-border/50 shadow-xs"
+          : "bg-transparent"
+      )}
+    >
+      <div className="container-content flex items-center justify-between h-16 lg:h-[4.25rem]">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 font-serif text-xl font-bold text-foreground tracking-tight">
-          <span className="text-green-light">Work</span>
-          <span>Life</span>
-          <span className="text-accent">Soccer</span>
+        <Link to="/" className="flex items-center gap-0.5 font-serif text-xl font-bold tracking-tight">
+          <span className={cn(scrolled ? "text-green-light" : "text-primary-foreground/90")}>Work</span>
+          <span className={cn(scrolled ? "text-foreground" : "text-primary-foreground")}>Life</span>
+          <span className={cn(scrolled ? "text-accent" : "text-gold-light")}>Soccer</span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-0.5">
           {navItems.map((item) =>
             item.children ? (
               <div
@@ -56,25 +73,34 @@ export function SiteHeader() {
                 onMouseEnter={() => setOpenDropdown(item.label)}
                 onMouseLeave={() => setOpenDropdown(null)}
               >
-                <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg">
+                <button className={cn(
+                  "flex items-center gap-1 px-3.5 py-2 text-sm font-medium transition-colors rounded-lg",
+                  scrolled ? "text-muted-foreground hover:text-foreground" : "text-primary-foreground/70 hover:text-primary-foreground"
+                )}>
                   {item.label}
-                  <ChevronDown className="h-3.5 w-3.5" />
+                  <ChevronDown className={cn("h-3 w-3 transition-transform", openDropdown === item.label && "rotate-180")} />
                 </button>
                 {openDropdown === item.label && (
-                  <div className="absolute top-full left-0 pt-1">
-                    <div className="bg-card rounded-xl border border-border/50 shadow-elevated p-2 min-w-[180px]">
+                  <div className="absolute top-full left-0 pt-2">
+                    <div className="bg-card rounded-xl border border-border/50 shadow-elevated p-1.5 min-w-[220px]">
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
                           to={child.href}
                           className={cn(
-                            "block px-3 py-2 text-sm rounded-lg transition-colors",
+                            "block px-3.5 py-2.5 rounded-lg transition-colors",
                             location.pathname === child.href
-                              ? "bg-primary/5 text-primary font-medium"
-                              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                              ? "bg-primary/5"
+                              : "hover:bg-muted/50"
                           )}
                         >
-                          {child.label}
+                          <p className={cn(
+                            "text-sm font-medium",
+                            location.pathname === child.href ? "text-primary" : "text-foreground"
+                          )}>
+                            {child.label}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5">{child.desc}</p>
                         </Link>
                       ))}
                     </div>
@@ -86,10 +112,10 @@ export function SiteHeader() {
                 key={item.label}
                 to={item.href!}
                 className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-lg transition-colors",
+                  "px-3.5 py-2 text-sm font-medium rounded-lg transition-colors",
                   location.pathname === item.href
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? (scrolled ? "text-primary" : "text-primary-foreground")
+                    : (scrolled ? "text-muted-foreground hover:text-foreground" : "text-primary-foreground/70 hover:text-primary-foreground")
                 )}
               >
                 {item.label}
@@ -100,17 +126,20 @@ export function SiteHeader() {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-3">
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-            <Search className="h-4.5 w-4.5" />
+          <button className={cn(
+            "p-2 transition-colors rounded-lg",
+            scrolled ? "text-muted-foreground hover:text-foreground" : "text-primary-foreground/70 hover:text-primary-foreground"
+          )}>
+            <Search className="h-[18px] w-[18px]" />
           </button>
           <Link to="/membership">
-            <Button variant="gold" size="sm">Join Free</Button>
+            <Button variant="gold" size="sm" className="shadow-glow">Join Free</Button>
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <button
-          className="lg:hidden p-2 text-foreground"
+          className={cn("lg:hidden p-2", scrolled ? "text-foreground" : "text-primary-foreground")}
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -119,22 +148,27 @@ export function SiteHeader() {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="lg:hidden bg-card border-t border-border/50 max-h-[80vh] overflow-y-auto">
+        <div className="lg:hidden bg-card border-t border-border/50 max-h-[85vh] overflow-y-auto shadow-elevated">
           <nav className="container-content py-4 space-y-1">
             {navItems.map((item) =>
               item.children ? (
-                <div key={item.label} className="space-y-1">
-                  <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <div key={item.label} className="space-y-0.5 mb-3">
+                  <p className="px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                     {item.label}
                   </p>
                   {item.children.map((child) => (
                     <Link
                       key={child.href}
                       to={child.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-3 py-2.5 text-sm font-medium text-foreground rounded-lg hover:bg-muted/50"
+                      className={cn(
+                        "block px-3 py-3 rounded-lg transition-colors",
+                        location.pathname === child.href
+                          ? "bg-primary/5 text-primary"
+                          : "text-foreground hover:bg-muted/50"
+                      )}
                     >
-                      {child.label}
+                      <p className="text-sm font-medium">{child.label}</p>
+                      <p className="text-xs text-muted-foreground">{child.desc}</p>
                     </Link>
                   ))}
                 </div>
@@ -142,16 +176,20 @@ export function SiteHeader() {
                 <Link
                   key={item.label}
                   to={item.href!}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2.5 text-sm font-medium text-foreground rounded-lg hover:bg-muted/50"
+                  className={cn(
+                    "block px-3 py-3 text-sm font-medium rounded-lg transition-colors",
+                    location.pathname === item.href
+                      ? "bg-primary/5 text-primary"
+                      : "text-foreground hover:bg-muted/50"
+                  )}
                 >
                   {item.label}
                 </Link>
               )
             )}
-            <div className="pt-3 border-t border-border/50">
-              <Link to="/membership" onClick={() => setMobileOpen(false)}>
-                <Button variant="gold" className="w-full">Join Free</Button>
+            <div className="pt-4 border-t border-border/50">
+              <Link to="/membership">
+                <Button variant="gold" className="w-full shadow-glow">Start Free — No Card Needed</Button>
               </Link>
             </div>
           </nav>
