@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Brain, Send, Heart, Sparkles, RotateCcw, Shield, Target } from "lucide-react";
-
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Brain, Send, Heart, Sparkles, RotateCcw, Shield, Target, ClipboardCheck, Dumbbell, Calendar } from "lucide-react";
 import { fadeUp } from "@/lib/animations";
 
 const useCases = [
@@ -21,10 +21,12 @@ const demoMessages = [
   { from: "coach", text: "I hear you. That feeling of exposure — especially in front of teammates — cuts deep.\n\nBut here's something important: one miscontrol doesn't define your ability. What else did you do in that game? Let's look at the full picture." },
 ];
 
-const checkIns = [
-  { title: "Weekly Confidence Check", desc: "Rate your confidence this week and explore what influenced it." },
-  { title: "Pre-Game Mental Reset", desc: "A 3-minute centering exercise before you step on the pitch." },
-  { title: "Post-Game Reflection", desc: "Process your performance with compassion, not criticism." },
+const modules = [
+  { title: "Pre-Game Reset", desc: "A 3-minute centering exercise to clear anxiety and find calm focus before kickoff.", icon: Target },
+  { title: "Confidence Builder", desc: "A guided session to rebuild belief after a rough patch or extended break.", icon: Sparkles },
+  { title: "Motivation Reset", desc: "Reconnect to why you play and rediscover intrinsic drive.", icon: Heart },
+  { title: "Post-Match Reflection", desc: "Process your performance with compassion, not criticism.", icon: ClipboardCheck },
+  { title: "Goal Alignment", desc: "Ensure your training, recovery, and mindset are all pulling in the same direction.", icon: Target },
 ];
 
 const journalPrompts = [
@@ -34,17 +36,23 @@ const journalPrompts = [
   "What does 'playing well' actually mean to me at this stage of life?",
 ];
 
+const checkIns = [
+  { title: "Weekly Confidence Check", desc: "Rate your confidence this week and explore what influenced it." },
+  { title: "Pre-Game Mental Reset", desc: "A 3-minute centering exercise before you step on the pitch." },
+  { title: "Post-Game Reflection", desc: "Process your performance without judgment." },
+];
+
 export default function MindsetCoach() {
   const [inputValue, setInputValue] = useState("");
 
   return (
     <>
       {/* Hero */}
-      <section className="section-band bg-primary text-primary-foreground">
+      <section className="section-band bg-primary text-primary-foreground pt-28 md:pt-36">
         <div className="container-content">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div initial="hidden" animate="visible">
-              <motion.p variants={fadeUp} custom={0} className="badge-gold mb-4">Emotionally Intelligent</motion.p>
+              <motion.p variants={fadeUp} custom={0} className="badge-gold mb-4">Develop the Mindset</motion.p>
               <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-bold mb-4">
                 Mindset Coach
               </motion.h1>
@@ -52,7 +60,7 @@ export default function MindsetCoach() {
                 A safe, private space to process frustration, rebuild confidence, and develop a healthier relationship with performance and aging.
               </motion.p>
               <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4">
-                <Button variant="gold" size="lg">Start Coaching Session</Button>
+                <Button variant="gold" size="lg" className="shadow-glow">Start Coaching Session</Button>
                 <Link to="/mindset"><Button variant="hero-outline" size="lg">Browse Mindset Hub</Button></Link>
               </motion.div>
             </motion.div>
@@ -78,24 +86,22 @@ export default function MindsetCoach() {
         <div className="container-content">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">A conversation that actually helps</h2>
-            <p className="text-editorial">See how the Mindset Coach guides you through real challenges.</p>
+            <p className="text-editorial mx-auto">See how the Mindset Coach guides you through real challenges.</p>
           </div>
           <div className="max-w-2xl mx-auto">
-            <div className="card-premium p-6 space-y-4">
+            <div className="card-premium-static p-6 space-y-4">
               {demoMessages.map((m, i) => (
                 <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
                   className={`flex items-start gap-3 ${m.from === "user" ? "justify-end" : ""}`}>
                   {m.from === "coach" && (
-                    <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                      <Brain className="h-4 w-4 text-accent" />
+                    <div className="w-8 h-8 rounded-full gradient-gold flex items-center justify-center flex-shrink-0">
+                      <Brain className="h-4 w-4 text-foreground" />
                     </div>
                   )}
-                  <div className={`rounded-xl p-4 text-sm max-w-[85%] whitespace-pre-line ${
-                    m.from === "coach"
-                      ? "bg-muted rounded-tl-sm text-foreground"
-                      : "bg-primary text-primary-foreground rounded-tr-sm"
-                  }`}>
-                    {m.text}
+                  <div className={m.from === "coach" ? "chat-bubble-coach flex-1" : "chat-bubble-user max-w-[80%]"}>
+                    {m.text.split('\n').map((line, li) => (
+                      <span key={li}>{line}<br /></span>
+                    ))}
                   </div>
                 </motion.div>
               ))}
@@ -105,21 +111,42 @@ export default function MindsetCoach() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Share what's on your mind..."
-                  className="flex-1 h-10 px-4 rounded-lg bg-muted text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="flex-1 h-11 px-4 rounded-xl bg-surface border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
-                <Button variant="gold" size="icon"><Send className="h-4 w-4" /></Button>
+                <Button variant="gold" size="icon" className="h-11 w-11 rounded-xl"><Send className="h-4 w-4" /></Button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Check-ins & Modules */}
+      {/* Modules */}
       <section className="section-band-alt">
         <div className="container-content">
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="text-center mb-12">
+            <p className="badge-gold mb-4">Coaching Modules</p>
+            <h2 className="text-3xl font-bold mb-4">Structured support for every situation</h2>
+            <p className="text-editorial mx-auto">Each module is designed for a specific mental challenge adult athletes face.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
+            {modules.map((m, i) => (
+              <motion.div key={m.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
+                className="card-premium p-6">
+                <m.icon className="h-6 w-6 text-accent mb-3" />
+                <h3 className="font-serif text-lg font-semibold mb-2">{m.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Check-ins & Journaling */}
+      <section className="section-band">
+        <div className="container-content">
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
             <div>
-              <h2 className="text-2xl font-bold mb-6">Weekly Check-Ins</h2>
+              <h2 className="font-serif text-2xl font-bold mb-6">Weekly Check-Ins</h2>
               <div className="space-y-4">
                 {checkIns.map((c) => (
                   <div key={c.title} className="card-premium p-5">
@@ -130,7 +157,7 @@ export default function MindsetCoach() {
               </div>
             </div>
             <div>
-              <h2 className="text-2xl font-bold mb-6">Journaling Prompts</h2>
+              <h2 className="font-serif text-2xl font-bold mb-6">Journaling Prompts</h2>
               <div className="space-y-4">
                 {journalPrompts.map((p) => (
                   <div key={p} className="card-premium p-5 flex items-start gap-3">
@@ -145,11 +172,17 @@ export default function MindsetCoach() {
       </section>
 
       {/* CTA */}
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Your mind deserves coaching too.</h2>
-          <p className="text-editorial max-w-xl mx-auto mb-8">Calm, private, judgment-free support for the mental side of the game.</p>
-          <Link to="/membership"><Button variant="gold" size="xl">Unlock Mindset Coach <ArrowRight className="h-4 w-4" /></Button></Link>
+          <p className="text-editorial mx-auto mb-8">Calm, private, judgment-free support for the mental side of the game.</p>
+          <Link to="/membership"><Button variant="gold" size="xl" className="shadow-glow">Unlock Mindset Coach <ArrowRight className="h-4 w-4" /></Button></Link>
+
+          <RecommendedNext items={[
+            { icon: ClipboardCheck, label: "Reflect", title: "Log a Match Reflection", href: "/match-reflection" },
+            { icon: Dumbbell, label: "Train", title: "Exercise Coach", href: "/exercise-coach" },
+            { icon: Calendar, label: "Dashboard", title: "Player Dashboard", href: "/tracker" },
+          ]} />
         </div>
       </section>
     </>

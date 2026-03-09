@@ -24,11 +24,12 @@ const navItems = [
     children: [
       { label: "Mindset Hub", href: "/mindset", desc: "Confidence & resilience" },
       { label: "Mindset Coach", href: "/mindset-coach", desc: "Personal guidance" },
+      { label: "Match Reflection", href: "/match-reflection", desc: "Post-match processing" },
     ],
   },
   { label: "Community", href: "/community" },
-  { label: "Library", href: "/library" },
-  { label: "Tracker", href: "/tracker" },
+  { label: "Dashboard", href: "/tracker" },
+  { label: "Start Here", href: "/start-here" },
 ];
 
 export function SiteHeader() {
@@ -43,7 +44,6 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // Close mobile on route change
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
   return (
@@ -56,14 +56,12 @@ export function SiteHeader() {
       )}
     >
       <div className="container-content flex items-center justify-between h-16 lg:h-[4.25rem]">
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-0.5 font-serif text-xl font-bold tracking-tight">
           <span className={cn(scrolled ? "text-green-light" : "text-primary-foreground/90")}>Work</span>
           <span className={cn(scrolled ? "text-foreground" : "text-primary-foreground")}>Life</span>
           <span className={cn(scrolled ? "text-accent" : "text-gold-light")}>Soccer</span>
         </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-0.5">
           {navItems.map((item) =>
             item.children ? (
@@ -89,17 +87,10 @@ export function SiteHeader() {
                           to={child.href}
                           className={cn(
                             "block px-3.5 py-2.5 rounded-lg transition-colors",
-                            location.pathname === child.href
-                              ? "bg-primary/5"
-                              : "hover:bg-muted/50"
+                            location.pathname === child.href ? "bg-primary/5" : "hover:bg-muted/50"
                           )}
                         >
-                          <p className={cn(
-                            "text-sm font-medium",
-                            location.pathname === child.href ? "text-primary" : "text-foreground"
-                          )}>
-                            {child.label}
-                          </p>
+                          <p className={cn("text-sm font-medium", location.pathname === child.href ? "text-primary" : "text-foreground")}>{child.label}</p>
                           <p className="text-xs text-muted-foreground mt-0.5">{child.desc}</p>
                         </Link>
                       ))}
@@ -124,7 +115,6 @@ export function SiteHeader() {
           )}
         </nav>
 
-        {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-3">
           <button className={cn(
             "p-2 transition-colors rounded-lg",
@@ -137,7 +127,6 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        {/* Mobile Toggle */}
         <button
           className={cn("lg:hidden p-2", scrolled ? "text-foreground" : "text-primary-foreground")}
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -146,25 +135,20 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {/* Mobile Nav */}
       {mobileOpen && (
         <div className="lg:hidden bg-card border-t border-border/50 max-h-[85vh] overflow-y-auto shadow-elevated">
           <nav className="container-content py-4 space-y-1">
             {navItems.map((item) =>
               item.children ? (
                 <div key={item.label} className="space-y-0.5 mb-3">
-                  <p className="px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                    {item.label}
-                  </p>
+                  <p className="px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">{item.label}</p>
                   {item.children.map((child) => (
                     <Link
                       key={child.href}
                       to={child.href}
                       className={cn(
                         "block px-3 py-3 rounded-lg transition-colors",
-                        location.pathname === child.href
-                          ? "bg-primary/5 text-primary"
-                          : "text-foreground hover:bg-muted/50"
+                        location.pathname === child.href ? "bg-primary/5 text-primary" : "text-foreground hover:bg-muted/50"
                       )}
                     >
                       <p className="text-sm font-medium">{child.label}</p>
@@ -178,9 +162,7 @@ export function SiteHeader() {
                   to={item.href!}
                   className={cn(
                     "block px-3 py-3 text-sm font-medium rounded-lg transition-colors",
-                    location.pathname === item.href
-                      ? "bg-primary/5 text-primary"
-                      : "text-foreground hover:bg-muted/50"
+                    location.pathname === item.href ? "bg-primary/5 text-primary" : "text-foreground hover:bg-muted/50"
                   )}
                 >
                   {item.label}
@@ -189,7 +171,7 @@ export function SiteHeader() {
             )}
             <div className="pt-4 border-t border-border/50">
               <Link to="/membership">
-                <Button variant="gold" className="w-full shadow-glow">Start Free — No Card Needed</Button>
+                <Button variant="gold" className="w-full shadow-glow">Start Your System</Button>
               </Link>
             </div>
           </nav>

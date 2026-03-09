@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
 import {
   Target, Heart, Brain, Shield, RotateCcw, Flame,
-  Layers, Users, Sparkles, ArrowRight, Star, CheckCircle,
-  MessageCircle, Dumbbell, BookOpen, TrendingUp, Play
+  Users, Sparkles, ArrowRight, Star, CheckCircle,
+  MessageCircle, Dumbbell, BookOpen, TrendingUp, Play,
+  Activity, Compass, ClipboardCheck
 } from "lucide-react";
 import heroImg from "@/assets/hero-soccer.jpg";
 import recoveryImg from "@/assets/recovery-hero.jpg";
@@ -16,25 +17,35 @@ import foamImg from "@/assets/recovery-foam-roller.jpg";
 import partnersImg from "@/assets/training-partners.jpg";
 import { fadeUp } from "@/lib/animations";
 
-const goals = [
-  { icon: Target, title: "Keep Playing Longer", desc: "Sustainable training that protects your body while keeping you on the pitch for years to come.", link: "/training" },
-  { icon: Flame, title: "Improve Fitness", desc: "Build match-ready stamina and conditioning designed around adult physiology.", link: "/training" },
-  { icon: Heart, title: "Recover Better", desc: "Smart recovery protocols that fit your schedule and keep you coming back.", link: "/recovery" },
-  { icon: Brain, title: "Build Confidence", desc: "Mental tools to play freely, silence doubt, and enjoy the game again.", link: "/mindset" },
-  { icon: Shield, title: "Prevent Injury", desc: "Prehab routines, load management, and warm-ups that actually protect you.", link: "/recovery" },
-  { icon: RotateCcw, title: "Return to the Game", desc: "Progressive plans to come back stronger and safer after time away.", link: "/training" },
+/* ── Data ── */
+const longevityPillars = [
+  { icon: Dumbbell, title: "Train Smart", desc: "Soccer-specific programs built for adult bodies. Age-appropriate intensity, progressive overload, and injury-aware scheduling.", color: "text-green-light" },
+  { icon: Heart, title: "Recover Better", desc: "Post-match protocols, mobility flows, sleep optimization, and load management designed for players over 40.", color: "text-accent" },
+  { icon: Shield, title: "Strengthen the Body", desc: "Functional strength that protects joints, supports movement quality, and builds durability for years of play.", color: "text-green-light" },
+  { icon: Brain, title: "Develop the Mindset", desc: "Confidence building, pre-match focus, emotional recovery, and resilience tools for the aging athlete.", color: "text-accent" },
+  { icon: Users, title: "Stay Connected", desc: "Accountability groups, shared goals, match reflection, and a community of players who understand your journey.", color: "text-green-light" },
 ];
 
-const pillars = [
-  { icon: Layers, title: "Structure", desc: "Clear training plans, recovery routines, and weekly schedules that fit a real adult life.", stat: "50+", statLabel: "guided plans" },
-  { icon: Users, title: "Support", desc: "Expert content, coaching tools, and a community of players who understand your journey.", stat: "2,400+", statLabel: "active members" },
-  { icon: Sparkles, title: "Mindset", desc: "Confidence building, motivation frameworks, and mental resilience for the long game.", stat: "30+", statLabel: "mindset modules" },
+const goals = [
+  { icon: Target, title: "Keep Playing Longer", desc: "Sustainable training that protects your body.", link: "/training" },
+  { icon: Flame, title: "Improve Fitness", desc: "Match-ready conditioning for adult physiology.", link: "/training" },
+  { icon: Heart, title: "Recover Better", desc: "Smart protocols that fit your schedule.", link: "/recovery" },
+  { icon: Shield, title: "Prevent Injury", desc: "Prehab, warm-ups, and load management.", link: "/recovery" },
+  { icon: Brain, title: "Build Confidence", desc: "Mental tools to play freely again.", link: "/mindset" },
+  { icon: RotateCcw, title: "Return to the Game", desc: "Come back stronger after time away.", link: "/start-here" },
+];
+
+const platformTools = [
+  { icon: Dumbbell, title: "Exercise Coach", desc: "AI-powered sessions tailored to your energy, soreness, and schedule.", href: "/exercise-coach", badge: "AI Feature" },
+  { icon: Brain, title: "Mindset Coach", desc: "Private coaching for confidence, motivation, and emotional resilience.", href: "/mindset-coach", badge: "AI Feature" },
+  { icon: ClipboardCheck, title: "Match Reflection", desc: "Log your performance, process the game, and get supportive feedback.", href: "/match-reflection", badge: "Tool" },
+  { icon: Activity, title: "Player Dashboard", desc: "Track training, recovery, habits, and weekly consistency in one place.", href: "/tracker", badge: "Dashboard" },
 ];
 
 const featuredContent = [
-  { image: partnersImg, badge: "Training", title: "The Over-40 Pre-Season Blueprint", desc: "A 6-week progressive plan to build match fitness without breaking down.", link: "/training", readTime: "8 min" },
-  { image: foamImg, badge: "Recovery", title: "Post-Match Recovery: The 24-Hour Protocol", desc: "What to do in the first hour, the first night, and the morning after.", link: "/recovery", readTime: "6 min" },
-  { image: mobilityImg, badge: "Mindset", title: "Playing Through Self-Doubt at 45", desc: "Why confidence fades as we age — and what to do about it.", link: "/mindset", readTime: "10 min" },
+  { image: partnersImg, badge: "Training", title: "How to Train Hard Without Breaking Down After 40", desc: "A progressive approach to intensity that protects while it builds.", link: "/training", readTime: "8 min" },
+  { image: foamImg, badge: "Recovery", title: "The 48-Hour Recovery Window After Matches", desc: "What to do in the first hour, the first night, and the morning after.", link: "/recovery", readTime: "6 min" },
+  { image: mobilityImg, badge: "Mindset", title: "Confidence Cycles in Adult Athletes", desc: "Why self-belief fluctuates as we age — and how to stabilize it.", link: "/mindset", readTime: "10 min" },
 ];
 
 const testimonials = [
@@ -53,7 +64,7 @@ const stats = [
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
+      {/* ── Hero ── */}
       <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0">
           <img src={heroImg} alt="Adult soccer player training at golden hour" className="w-full h-full object-cover" />
@@ -61,30 +72,25 @@ export default function HomePage() {
         </div>
         <div className="relative container-content py-28 md:py-36 lg:py-44">
           <motion.div initial="hidden" animate="visible" className="max-w-2xl">
-            <motion.p variants={fadeUp} custom={0} className="badge-white mb-6">
-              For players 40 and beyond
-            </motion.p>
+            <motion.p variants={fadeUp} custom={0} className="badge-white mb-6">For players 40 and beyond</motion.p>
             <motion.h1 variants={fadeUp} custom={1} className="text-4xl sm:text-5xl lg:text-[3.75rem] font-bold text-primary-foreground leading-[1.08] mb-6 text-balance">
-              Stay in the game.<br className="hidden sm:block" />
-              <span className="text-gold-light">Play smarter.</span> Recover stronger.
+              Stay in the Game Longer
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-base sm:text-lg text-primary-foreground/75 mb-10 max-w-lg leading-relaxed">
-              The complete training, recovery, and mindset platform for adult soccer players who refuse to quit the game they love.
+              Soccer doesn't have to end in your 30s. With the right structure, recovery, and mindset, players can stay strong and competitive well into their 40s and 50s.
             </motion.p>
             <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-3">
-              <Link to="/membership">
-                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">Start Free — No Card Needed</Button>
+              <Link to="/start-here">
+                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">Start Your System</Button>
               </Link>
               <Link to="/training">
                 <Button variant="hero-outline" size="xl" className="w-full sm:w-auto">
-                  <Play className="h-4 w-4" /> Explore the Platform
+                  <Play className="h-4 w-4" /> Explore Training
                 </Button>
               </Link>
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Bottom stats strip */}
         <div className="absolute bottom-0 left-0 right-0 bg-primary/40 backdrop-blur-md border-t border-primary-foreground/10">
           <div className="container-content py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
@@ -99,13 +105,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Goals */}
+      {/* ── The Longevity System ── */}
+      <section className="section-band-alt">
+        <div className="container-content">
+          <div className="text-center mb-16 md:mb-20">
+            <p className="badge-gold mb-4">The WorkLifeSoccer Longevity System</p>
+            <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5 text-balance">Five pillars. One system. Play forever.</h2>
+            <p className="text-editorial mx-auto">Everything on this platform maps to a framework designed to keep adult soccer players active, healthy, and competitive for decades.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {longevityPillars.map((p, i) => (
+              <motion.div key={p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
+                className="text-center p-6 rounded-2xl bg-card border border-border/30 shadow-card">
+                <div className="w-12 h-12 rounded-2xl gradient-green flex items-center justify-center mx-auto mb-4">
+                  <p.icon className="h-5 w-5 text-primary-foreground" />
+                </div>
+                <h3 className="font-serif text-lg font-bold mb-2">{p.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Choose Your Focus ── */}
       <section className="section-band">
         <div className="container-content">
           <div className="text-center mb-16 md:mb-20">
             <p className="badge-green mb-4">Choose Your Focus</p>
             <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5 text-balance">What matters most to you right now?</h2>
-            <p className="text-editorial mx-auto">Every player's journey is different. Start with the area that will make the biggest impact on your game.</p>
+            <p className="text-editorial mx-auto">Every player's journey is different. Start with the area that will make the biggest impact.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {goals.map((g, i) => (
@@ -126,72 +155,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pillars */}
-      <section className="section-band-alt">
+      {/* ── Featured Platform Tools ── */}
+      <section className="section-band-warm">
         <div className="container-content">
-          <div className="text-center mb-16 md:mb-20">
-            <p className="badge-gold mb-4">The WorkLifeSoccer System</p>
-            <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5 text-balance">Three pillars. One smarter way to play.</h2>
-            <p className="text-editorial mx-auto">Staying in the game takes more than fitness. It takes structure, support, and the right mindset working together.</p>
+          <div className="text-center mb-14">
+            <p className="badge-green mb-4">Platform Tools</p>
+            <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5">Your digital coaching toolkit</h2>
+            <p className="text-editorial mx-auto">Four powerful tools that work together to guide your training, recovery, and mindset — every week.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {pillars.map((p, i) => (
-              <motion.div key={p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
-                className="text-center p-8 rounded-2xl bg-card border border-border/30 shadow-card">
-                <div className="w-14 h-14 rounded-2xl gradient-gold flex items-center justify-center mx-auto mb-6 shadow-glow">
-                  <p.icon className="h-6 w-6 text-foreground" />
-                </div>
-                <h3 className="font-serif text-2xl font-bold mb-3">{p.title}</h3>
-                <p className="text-muted-foreground leading-relaxed mb-5">{p.desc}</p>
-                <div className="pt-4 border-t border-border/50">
-                  <p className="stat-number text-2xl text-foreground">{p.stat}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{p.statLabel}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Content with Images */}
-      <section className="section-band">
-        <div className="container-content">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12 md:mb-14">
-            <div>
-              <p className="badge-green mb-4">Featured Guides</p>
-              <h2 className="text-3xl md:text-[2.75rem] font-bold">Expert content, built for your game.</h2>
-            </div>
-            <Link to="/library" className="hidden md:flex items-center gap-2 text-sm font-semibold text-green-light hover:text-primary transition-colors">
-              Browse full library <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="grid md:grid-cols-3 gap-5">
-            {featuredContent.map((c, i) => (
-              <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-                <Link to={c.link} className="block group">
-                  <div className="image-card mb-4">
-                    <img src={c.image} alt={c.title} />
-                    <div className="image-card-overlay">
-                      <span className="badge-white w-fit mb-2">{c.badge}</span>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {platformTools.map((t, i) => (
+              <motion.div key={t.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={t.href} className="card-premium p-6 block h-full group">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                      <t.icon className="h-5 w-5 text-green-light" />
                     </div>
+                    <span className="badge-gold text-[9px]">{t.badge}</span>
                   </div>
-                  <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-green-light transition-colors">{c.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-2">{c.desc}</p>
-                  <p className="text-xs text-muted-foreground">{c.readTime} read</p>
+                  <h3 className="font-serif text-lg font-semibold mb-2 group-hover:text-green-light transition-colors">{t.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
                 </Link>
               </motion.div>
             ))}
           </div>
-          <div className="mt-8 text-center md:hidden">
-            <Link to="/library" className="inline-flex items-center gap-2 text-sm font-semibold text-green-light">
-              Browse full library <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Exercise Coach Teaser */}
-      <section className="section-band-warm">
+      {/* ── Exercise Coach Teaser ── */}
+      <section className="section-band">
         <div className="container-content">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
@@ -212,7 +204,6 @@ export default function HomePage() {
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp}>
               <div className="card-premium-static p-5 md:p-6">
-                {/* Mock chat */}
                 <div className="space-y-4 mb-4">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full gradient-green flex items-center justify-center flex-shrink-0">
@@ -240,8 +231,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mindset Coach Teaser */}
-      <section className="section-band">
+      {/* ── Mindset Coach Teaser ── */}
+      <section className="section-band-alt">
         <div className="container-content">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="order-2 lg:order-1">
@@ -253,7 +244,7 @@ export default function HomePage() {
                     </div>
                     <div className="chat-bubble-coach flex-1">
                       <p className="font-semibold text-foreground text-xs mb-1.5">Mindset Coach</p>
-                      <p className="text-muted-foreground">It sounds like you're carrying frustration from that last match. Let's separate what happened from the story you're telling yourself about it. What's bothering you most?</p>
+                      <p className="text-muted-foreground">It sounds like you're carrying frustration from that last match. Let's separate what happened from the story you're telling yourself about it.</p>
                     </div>
                   </div>
                   <div className="flex justify-end">
@@ -289,7 +280,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Recovery Banner */}
+      {/* ── Featured Guides ── */}
+      <section className="section-band">
+        <div className="container-content">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12 md:mb-14">
+            <div>
+              <p className="badge-green mb-4">Featured Guides</p>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold">Expert content for your game.</h2>
+            </div>
+            <Link to="/library" className="hidden md:flex items-center gap-2 text-sm font-semibold text-green-light hover:text-primary transition-colors">
+              Browse full library <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {featuredContent.map((c, i) => (
+              <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={c.link} className="block group">
+                  <div className="image-card mb-4">
+                    <img src={c.image} alt={c.title} />
+                    <div className="image-card-overlay">
+                      <span className="badge-white w-fit mb-2">{c.badge}</span>
+                    </div>
+                  </div>
+                  <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-green-light transition-colors">{c.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-2">{c.desc}</p>
+                  <p className="text-xs text-muted-foreground">{c.readTime} read</p>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+          <div className="mt-8 text-center md:hidden">
+            <Link to="/library" className="inline-flex items-center gap-2 text-sm font-semibold text-green-light">
+              Browse full library <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Recovery Banner ── */}
       <section className="relative py-28 md:py-36">
         <div className="absolute inset-0">
           <img src={recoveryImg} alt="Adults stretching on soccer field" className="w-full h-full object-cover" />
@@ -307,24 +335,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Community + Image Cards */}
+      {/* ── Community ── */}
       <section className="section-band">
         <div className="container-content">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
               <div className="grid grid-cols-2 gap-3">
-                <div className="image-card">
-                  <img src={communityImg} alt="Adult soccer team celebrating" />
-                </div>
-                <div className="image-card">
-                  <img src={gearImg} alt="Player lacing up boots" />
-                </div>
+                <div className="image-card"><img src={communityImg} alt="Adult soccer team celebrating" /></div>
+                <div className="image-card"><img src={gearImg} alt="Player lacing up boots" /></div>
               </div>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp}>
               <p className="badge-green mb-4">Community</p>
               <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5">You're not playing alone.</h2>
-              <p className="text-editorial mb-7">Join accountability circles, share goals, celebrate progress, and connect with players who understand exactly where you are in your journey.</p>
+              <p className="text-editorial mb-7">Join accountability circles, share goals, and connect with players who understand exactly where you are.</p>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {[
                   { icon: Users, label: "Small Groups", desc: "6–12 players" },
@@ -349,7 +373,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* ── Testimonials ── */}
       <section className="section-band-alt">
         <div className="container-content">
           <div className="text-center mb-16 md:mb-20">
@@ -361,15 +385,11 @@ export default function HomePage() {
               <motion.div key={t.name} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}
                 className="card-premium p-6 md:p-7">
                 <div className="flex gap-0.5 mb-5">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} className="h-4 w-4 fill-accent text-accent" />
-                  ))}
+                  {[...Array(5)].map((_, j) => <Star key={j} className="h-4 w-4 fill-accent text-accent" />)}
                 </div>
                 <p className="text-sm leading-relaxed mb-6 text-muted-foreground italic">"{t.quote}"</p>
                 <div className="flex items-center gap-3 pt-4 border-t border-border/50">
-                  <div className="w-9 h-9 rounded-full gradient-green flex items-center justify-center text-xs font-bold text-primary-foreground">
-                    {t.initials}
-                  </div>
+                  <div className="w-9 h-9 rounded-full gradient-green flex items-center justify-center text-xs font-bold text-primary-foreground">{t.initials}</div>
                   <div>
                     <p className="text-sm font-semibold">{t.name}, {t.age}</p>
                     <p className="text-xs text-muted-foreground">{t.role}</p>
@@ -381,7 +401,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Membership Teaser */}
+      {/* ── Membership Teaser ── */}
       <section className="section-band">
         <div className="container-content">
           <div className="relative rounded-3xl overflow-hidden bg-primary p-8 md:p-16 lg:p-20">
@@ -390,24 +410,20 @@ export default function HomePage() {
             </div>
             <div className="relative text-center max-w-2xl mx-auto">
               <p className="badge-gold mb-6">Membership</p>
-              <h2 className="text-3xl md:text-5xl font-bold text-primary-foreground mb-5 text-balance">Your game. Your system. Your progress.</h2>
+              <h2 className="text-3xl md:text-5xl font-bold text-primary-foreground mb-5 text-balance">Build Your System for Soccer Longevity</h2>
               <p className="text-base md:text-lg text-primary-foreground/70 mb-10 leading-relaxed">
                 Unlock premium training plans, AI coaching, progress tracking, and an exclusive community of committed adult players.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-3">
-                <Link to="/membership">
-                  <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">View Plans & Pricing</Button>
-                </Link>
-                <Link to="/library">
-                  <Button variant="hero-outline" size="xl" className="w-full sm:w-auto">Browse Free Content</Button>
-                </Link>
+                <Link to="/membership"><Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">View Plans & Pricing</Button></Link>
+                <Link to="/start-here"><Button variant="hero-outline" size="xl" className="w-full sm:w-auto">Start Here</Button></Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
+      {/* ── Final CTA ── */}
       <section className="section-band-alt">
         <div className="container-content text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
@@ -415,8 +431,8 @@ export default function HomePage() {
             <p className="text-editorial mx-auto mb-10">
               Join thousands of adult soccer players building better habits, recovering faster, and enjoying the game more than ever.
             </p>
-            <Link to="/membership">
-              <Button variant="gold" size="xl" className="shadow-glow">Get Started Free <ArrowRight className="h-4 w-4" /></Button>
+            <Link to="/start-here">
+              <Button variant="gold" size="xl" className="shadow-glow">Start Your System <ArrowRight className="h-4 w-4" /></Button>
             </Link>
           </motion.div>
         </div>
