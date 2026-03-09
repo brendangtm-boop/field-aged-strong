@@ -4,10 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Brain, Heart, Target, Shield, RotateCcw, Flame, Users, Sparkles } from "lucide-react";
 import mindsetImg from "@/assets/mindset-hero.jpg";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const topics = [
   { icon: Sparkles, title: "Confidence", desc: "Rebuild belief in your ability, regardless of age or recent form." },

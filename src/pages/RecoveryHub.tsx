@@ -4,10 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Moon, Droplets, Activity, Heart, Shield, Clock, Zap, Target } from "lucide-react";
 import recoveryImg from "@/assets/recovery-hero.jpg";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const categories = [
   { icon: Activity, title: "Mobility Routines", desc: "Hip openers, ankle work, thoracic spine flows.", count: 18 },

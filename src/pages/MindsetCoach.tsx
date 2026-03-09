@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Brain, Send, Heart, Sparkles, RotateCcw, Shield, Target } from "lucide-react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const useCases = [
   { icon: RotateCcw, title: "Reset after a bad game", desc: "Process frustration and move forward." },

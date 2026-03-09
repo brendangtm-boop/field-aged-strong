@@ -10,10 +10,7 @@ import heroImg from "@/assets/hero-soccer.jpg";
 import recoveryImg from "@/assets/recovery-hero.jpg";
 import communityImg from "@/assets/community-hero.jpg";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const goals = [
   { icon: Target, title: "Keep Playing Longer", desc: "Sustainable training that protects your body while keeping you competitive." },

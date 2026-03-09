@@ -4,10 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Flame, Shield, Zap, RotateCcw, Target, Heart, Activity } from "lucide-react";
 import trainingImg from "@/assets/training-hero.jpg";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const categories = [
   { icon: Flame, title: "Stamina & Conditioning", desc: "Build match-ready endurance without burning out.", count: 12 },

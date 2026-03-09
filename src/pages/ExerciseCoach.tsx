@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Dumbbell, Send, CheckCircle, Clock, Zap, Shield, RotateCcw } from "lucide-react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const useCases = [
   { icon: Clock, title: "I only have 20 minutes", desc: "Quick, focused sessions when time is tight." },

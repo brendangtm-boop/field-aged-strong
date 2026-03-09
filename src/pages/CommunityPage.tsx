@@ -4,10 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Target, MessageCircle, Star, Calendar, Award, Heart, Shield } from "lucide-react";
 import communityImg from "@/assets/community-hero.jpg";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const features = [
   { icon: Users, title: "Small Groups & Circles", desc: "Join a group of 6–12 players with shared goals. Support each other, stay accountable, and build real connections." },

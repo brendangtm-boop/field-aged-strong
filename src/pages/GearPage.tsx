@@ -3,10 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Shield, Shirt, Footprints, Wrench, Sun } from "lucide-react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const gearCategories = [
   { icon: Footprints, title: "Footwear", desc: "Boots and turf shoes for aging feet, wide fits, and comfort-first performance.", items: ["Best boots for artificial turf over 40", "Wide-fit soccer shoes that don't compromise touch", "Why cushioning matters more now"] },
