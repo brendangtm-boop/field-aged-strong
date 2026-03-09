@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Brain, Heart, Target, Shield, RotateCcw, Flame, Users, Sparkles } from "lucide-react";
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Brain, Heart, Target, Shield, RotateCcw, Flame, Users, Sparkles, ClipboardCheck, Dumbbell } from "lucide-react";
 import mindsetImg from "@/assets/mindset-hero.jpg";
 
 import { fadeUp } from "@/lib/animations";

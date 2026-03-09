@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Moon, Droplets, Activity, Heart, Shield, Clock, Zap, Target } from "lucide-react";
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Moon, Droplets, Activity, Heart, Shield, Clock, Zap, Target, Dumbbell, Brain } from "lucide-react";
 import recoveryImg from "@/assets/recovery-hero.jpg";
 
 import { fadeUp } from "@/lib/animations";

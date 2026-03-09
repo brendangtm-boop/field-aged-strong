@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Clock, Flame, Shield, Zap, RotateCcw, Target, Heart, Activity } from "lucide-react";
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Clock, Flame, Shield, Zap, RotateCcw, Target, Heart, Activity, Brain } from "lucide-react";
 import trainingImg from "@/assets/training-hero.jpg";
 
 import { fadeUp } from "@/lib/animations";

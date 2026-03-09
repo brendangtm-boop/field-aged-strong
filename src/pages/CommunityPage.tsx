@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Users, Target, MessageCircle, Star, Calendar, Award, Heart, Shield } from "lucide-react";
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Users, Target, MessageCircle, Star, Calendar, Award, Heart, Shield, Dumbbell, Brain, Activity } from "lucide-react";
 import communityImg from "@/assets/community-hero.jpg";
 
 import { fadeUp } from "@/lib/animations";
