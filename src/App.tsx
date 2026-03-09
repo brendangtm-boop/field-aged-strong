@@ -19,6 +19,10 @@ import TrackerPage from "./pages/TrackerPage";
 import LibraryPage from "./pages/LibraryPage";
 import MembershipPage from "./pages/MembershipPage";
 import AboutPage from "./pages/AboutPage";
+import WorkoutDetail from "./pages/WorkoutDetail";
+import RecoveryDetail from "./pages/RecoveryDetail";
+import ArticleDetail from "./pages/ArticleDetail";
+import CategoryPage from "./pages/CategoryPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,15 +39,19 @@ const App = () => (
             <Route path="/" element={<HomePage />} />
             <Route path="/start-here" element={<StartHerePage />} />
             <Route path="/training" element={<TrainingHub />} />
+            <Route path="/training/:slug" element={<WorkoutDetail />} />
             <Route path="/recovery" element={<RecoveryHub />} />
+            <Route path="/recovery/:slug" element={<RecoveryDetail />} />
             <Route path="/mindset" element={<MindsetHub />} />
+            <Route path="/library" element={<LibraryPage />} />
+            <Route path="/library/:slug" element={<ArticleDetail />} />
+            <Route path="/category/:type/:category" element={<CategoryPage />} />
             <Route path="/exercise-coach" element={<ExerciseCoach />} />
             <Route path="/mindset-coach" element={<MindsetCoach />} />
             <Route path="/match-reflection" element={<MatchReflectionPage />} />
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/gear" element={<GearPage />} />
             <Route path="/tracker" element={<TrackerPage />} />
-            <Route path="/library" element={<LibraryPage />} />
             <Route path="/membership" element={<MembershipPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Route>

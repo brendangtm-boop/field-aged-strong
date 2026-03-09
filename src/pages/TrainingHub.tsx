@@ -4,26 +4,32 @@ import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
 import { ArrowRight, Clock, Flame, Shield, Zap, RotateCcw, Target, Heart, Activity, Brain } from "lucide-react";
 import trainingImg from "@/assets/training-hero.jpg";
+import { workouts } from "@/data/workouts";
+import { TRAINING_CATEGORIES } from "@/data/types";
 
 import { fadeUp } from "@/lib/animations";
 
-const categories = [
-  { icon: Flame, title: "Stamina & Conditioning", desc: "Build match-ready endurance without burning out.", count: 12 },
-  { icon: Zap, title: "Strength for Soccer", desc: "Functional strength that translates to the pitch.", count: 9 },
-  { icon: Heart, title: "Mobility & Flexibility", desc: "Open up tight hips, ankles, and shoulders.", count: 15 },
-  { icon: Activity, title: "Acceleration & Agility", desc: "Quick direction changes and first-step speed.", count: 8 },
-  { icon: Shield, title: "Balance & Coordination", desc: "Stability training that prevents falls and injuries.", count: 7 },
-  { icon: RotateCcw, title: "Return-to-Play", desc: "Progressive plans for coming back after injury or layoff.", count: 6 },
-  { icon: Target, title: "Age-Smart Training", desc: "Periodization and load management for 40+ bodies.", count: 11 },
-  { icon: Clock, title: "Quick Sessions", desc: "15–20 minute workouts for the time-crunched player.", count: 14 },
-];
+const categoryIcons: Record<string, any> = {
+  "Stamina & Conditioning": Flame,
+  "Strength for Soccer": Zap,
+  "Mobility & Flexibility": Heart,
+  "Acceleration & Agility": Activity,
+  "Balance & Coordination": Shield,
+  "Return-to-Play": RotateCcw,
+  "Age-Smart Training": Target,
+  "Quick Sessions": Clock,
+};
 
-const plans = [
-  { title: "6-Week Match Fitness Builder", level: "Intermediate", duration: "6 weeks", sessions: "3x/week", badge: "Popular" },
-  { title: "Return After Layoff Program", level: "Beginner", duration: "8 weeks", sessions: "2–3x/week", badge: "New" },
-  { title: "Over-45 Strength Foundation", level: "All Levels", duration: "4 weeks", sessions: "2x/week", badge: "" },
-  { title: "Pre-Season Speed & Power", level: "Advanced", duration: "4 weeks", sessions: "3x/week", badge: "Premium" },
-];
+const categoryDescs: Record<string, string> = {
+  "Stamina & Conditioning": "Build match-ready endurance without burning out.",
+  "Strength for Soccer": "Functional strength that translates to the pitch.",
+  "Mobility & Flexibility": "Open up tight hips, ankles, and shoulders.",
+  "Acceleration & Agility": "Quick direction changes and first-step speed.",
+  "Balance & Coordination": "Stability training that prevents falls and injuries.",
+  "Return-to-Play": "Progressive plans for coming back after injury or layoff.",
+  "Age-Smart Training": "Periodization and load management for 40+ bodies.",
+  "Quick Sessions": "15–20 minute workouts for the time-crunched player.",
+};
 
 const filters = [
   { label: "By Goal", options: ["Build Fitness", "Prevent Injury", "Return to Play", "Maintain Strength", "Improve Speed"] },
@@ -32,6 +38,22 @@ const filters = [
 ];
 
 export default function TrainingHub() {
+  const categories = TRAINING_CATEGORIES.map(cat => ({
+    icon: categoryIcons[cat] || Target,
+    title: cat,
+    desc: categoryDescs[cat] || "",
+    count: workouts.filter(w => w.category === cat).length,
+  }));
+
+  const featured = workouts.slice(0, 4).map(w => ({
+    slug: w.slug,
+    title: w.title,
+    level: w.difficulty,
+    duration: w.duration,
+    category: w.category,
+    badge: w.difficulty === "Advanced" ? "Premium" : w.difficulty === "Beginner" ? "New" : "Popular",
+  }));
+
   return (
     <>
       {/* Hero */}
@@ -47,7 +69,7 @@ export default function TrainingHub() {
               Train smarter. Play longer.
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-lg text-primary-foreground/80 mb-8 max-w-lg">
-              Soccer-specific training programs, workout plans, and exercise guides designed for adult players who want to stay competitive.
+              {workouts.length} soccer-specific workouts, plans, and exercise guides designed for adult players who want to stay competitive.
             </motion.p>
             <motion.div variants={fadeUp} custom={3}>
               <Link to="/exercise-coach"><Button variant="gold" size="lg">Try Exercise Coach <ArrowRight className="h-4 w-4" /></Button></Link>
@@ -85,32 +107,36 @@ export default function TrainingHub() {
           <h2 className="text-3xl font-bold mb-8">Training Categories</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {categories.map((c, i) => (
-              <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp} className="card-premium p-5 group cursor-pointer">
-                <c.icon className="h-6 w-6 text-green-light mb-3" />
-                <h3 className="font-serif text-lg font-semibold mb-1 group-hover:text-green-light transition-colors">{c.title}</h3>
-                <p className="text-xs text-muted-foreground mb-2">{c.desc}</p>
-                <span className="text-xs font-medium text-green-light">{c.count} workouts</span>
+              <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={`/category/training/${encodeURIComponent(c.title)}`} className="card-premium p-5 group cursor-pointer block">
+                  <c.icon className="h-6 w-6 text-green-light mb-3" />
+                  <h3 className="font-serif text-lg font-semibold mb-1 group-hover:text-green-light transition-colors">{c.title}</h3>
+                  <p className="text-xs text-muted-foreground mb-2">{c.desc}</p>
+                  <span className="text-xs font-medium text-green-light">{c.count} workouts</span>
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Plans */}
+      {/* Featured Workouts */}
       <section className="section-band">
         <div className="container-content">
-          <h2 className="text-3xl font-bold mb-8">Featured Plans</h2>
+          <h2 className="text-3xl font-bold mb-8">Featured Workouts</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {plans.map((p, i) => (
-              <motion.div key={p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp} className="card-premium p-6 flex items-start justify-between gap-4">
-                <div>
-                  {p.badge && <span className={p.badge === "Premium" ? "badge-gold mb-2 block w-fit" : "badge-green mb-2 block w-fit"}>{p.badge}</span>}
-                  <h3 className="font-serif text-xl font-semibold mb-2">{p.title}</h3>
-                  <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                    <span>{p.level}</span><span>•</span><span>{p.duration}</span><span>•</span><span>{p.sessions}</span>
+            {featured.map((p, i) => (
+              <motion.div key={p.slug} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={`/training/${p.slug}`} className="card-premium p-6 flex items-start justify-between gap-4 group block">
+                  <div>
+                    {p.badge && <span className={p.badge === "Premium" ? "badge-gold mb-2 block w-fit" : "badge-green mb-2 block w-fit"}>{p.badge}</span>}
+                    <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-green-light transition-colors">{p.title}</h3>
+                    <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+                      <span>{p.level}</span><span>•</span><span>{p.duration}</span><span>•</span><span>{p.category}</span>
+                    </div>
                   </div>
-                </div>
-                <Button variant="outline" size="sm">View Plan</Button>
+                  <Button variant="outline" size="sm">View</Button>
+                </Link>
               </motion.div>
             ))}
           </div>
