@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Moon, Droplets, Activity, Heart, Shield, Clock, Zap, Target } from "lucide-react";
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Moon, Droplets, Activity, Heart, Shield, Clock, Zap, Target, Dumbbell, Brain } from "lucide-react";
 import recoveryImg from "@/assets/recovery-hero.jpg";
 
 import { fadeUp } from "@/lib/animations";
@@ -86,6 +87,12 @@ export default function RecoveryHub() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Recovery is your competitive advantage.</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">The players who last longest are the ones who recover best. Start building your recovery system today.</p>
           <Link to="/membership"><Button variant="gold" size="xl">Unlock Full Recovery Library <ArrowRight className="h-4 w-4" /></Button></Link>
+
+          <RecommendedNext items={[
+            { icon: Dumbbell, label: "Training", title: "Browse Training Programs", href: "/training" },
+            { icon: Brain, label: "Mindset", title: "Mindset Hub", href: "/mindset" },
+            { icon: Target, label: "Coach", title: "Try Exercise Coach", href: "/exercise-coach" },
+          ]} />
         </div>
       </section>
     </>

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Users, Target, MessageCircle, Star, Calendar, Award, Heart, Shield } from "lucide-react";
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Users, Target, MessageCircle, Star, Calendar, Award, Heart, Shield, Dumbbell, Brain, Activity } from "lucide-react";
 import communityImg from "@/assets/community-hero.jpg";
 
 import { fadeUp } from "@/lib/animations";
@@ -128,6 +129,12 @@ export default function CommunityPage() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Find your people.</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">Join a supportive community of adult players who are building better habits together.</p>
           <Link to="/membership"><Button variant="gold" size="xl">Join the Community <ArrowRight className="h-4 w-4" /></Button></Link>
+
+          <RecommendedNext items={[
+            { icon: Dumbbell, label: "Training", title: "Training Hub", href: "/training" },
+            { icon: Brain, label: "Mindset", title: "Mindset Hub", href: "/mindset" },
+            { icon: Activity, label: "Dashboard", title: "Player Dashboard", href: "/tracker" },
+          ]} />
         </div>
       </section>
     </>

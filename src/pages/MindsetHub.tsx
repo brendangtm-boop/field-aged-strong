@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Brain, Heart, Target, Shield, RotateCcw, Flame, Users, Sparkles } from "lucide-react";
+import { RecommendedNext } from "@/components/RecommendedNext";
+import { ArrowRight, Brain, Heart, Target, Shield, RotateCcw, Flame, Users, Sparkles, ClipboardCheck, Dumbbell } from "lucide-react";
 import mindsetImg from "@/assets/mindset-hero.jpg";
 
 import { fadeUp } from "@/lib/animations";
@@ -85,6 +86,12 @@ export default function MindsetHub() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Your mind is part of your game.</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">Get personalized mindset support from our AI-powered Mindset Coach.</p>
           <Link to="/mindset-coach"><Button variant="gold" size="xl">Start Mindset Coaching <ArrowRight className="h-4 w-4" /></Button></Link>
+
+          <RecommendedNext items={[
+            { icon: ClipboardCheck, label: "Reflect", title: "Log a Match Reflection", href: "/match-reflection" },
+            { icon: Dumbbell, label: "Training", title: "Training Hub", href: "/training" },
+            { icon: Heart, label: "Recovery", title: "Recovery Hub", href: "/recovery" },
+          ]} />
         </div>
       </section>
     </>

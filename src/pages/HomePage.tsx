@@ -91,13 +91,18 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-primary/40 backdrop-blur-md border-t border-primary-foreground/10">
+      <div className="absolute bottom-0 left-0 right-0 bg-primary/40 backdrop-blur-md border-t border-primary-foreground/10">
           <div className="container-content py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-              {stats.map(s => (
-                <div key={s.label} className="text-center">
-                  <p className="stat-number text-xl md:text-2xl text-primary-foreground">{s.value}</p>
-                  <p className="text-xs text-primary-foreground/60 mt-0.5">{s.label}</p>
+              {[
+                { icon: CheckCircle, label: "Trusted Guidance" },
+                { icon: Dumbbell, label: "Structured Training" },
+                { icon: Heart, label: "Recovery-First Approach" },
+                { icon: Users, label: "Community Support" },
+              ].map(s => (
+                <div key={s.label} className="flex items-center justify-center gap-2">
+                  <s.icon className="h-4 w-4 text-gold-light" />
+                  <p className="text-xs md:text-sm text-primary-foreground/80 font-medium">{s.label}</p>
                 </div>
               ))}
             </div>
