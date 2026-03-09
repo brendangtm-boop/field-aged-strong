@@ -4,30 +4,37 @@ import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
 import { ArrowRight, Moon, Droplets, Activity, Heart, Shield, Clock, Zap, Target, Dumbbell, Brain } from "lucide-react";
 import recoveryImg from "@/assets/recovery-hero.jpg";
+import { recoveryRoutines } from "@/data/recovery";
+import { RECOVERY_CATEGORIES } from "@/data/types";
 
 import { fadeUp } from "@/lib/animations";
 
-const categories = [
-  { icon: Activity, title: "Mobility Routines", desc: "Hip openers, ankle work, thoracic spine flows.", count: 18 },
-  { icon: Moon, title: "Sleep Optimization", desc: "Better sleep habits for faster recovery.", count: 8 },
-  { icon: Droplets, title: "Hydration Protocols", desc: "Pre, during, and post-match hydration strategies.", count: 6 },
-  { icon: Heart, title: "Soreness Management", desc: "Active recovery and load management tips.", count: 12 },
-  { icon: Shield, title: "Injury Prevention", desc: "Prehab exercises for knees, ankles, and hamstrings.", count: 14 },
-  { icon: Clock, title: "Post-Match Recovery", desc: "The first 24 hours after a game.", count: 9 },
-  { icon: Zap, title: "Recovery by Body Area", desc: "Targeted routines for specific joints and muscles.", count: 16 },
-  { icon: Target, title: "Busy Adult Routines", desc: "10–15 minute recovery for packed schedules.", count: 11 },
-];
+const categoryIcons: Record<string, any> = {
+  "Post-Match Recovery": Clock,
+  "Mobility Reset": Activity,
+  "Sleep Recovery": Moon,
+  "Hydration Strategy": Droplets,
+  "Muscle Soreness Management": Heart,
+};
 
-const routines = [
-  { title: "Morning Mobility Flow", time: "12 min", focus: "Full Body", level: "All Levels" },
-  { title: "Post-Match Lower Body Reset", time: "18 min", focus: "Legs & Hips", level: "All Levels" },
-  { title: "Desk Worker Hip Opener", time: "10 min", focus: "Hips", level: "Beginner" },
-  { title: "Sunday Recovery Session", time: "25 min", focus: "Full Body", level: "All Levels" },
-  { title: "Ankle & Knee Stability", time: "15 min", focus: "Lower Body", level: "Intermediate" },
-  { title: "Pre-Bed Wind Down", time: "8 min", focus: "Relaxation", level: "All Levels" },
-];
+const categoryDescs: Record<string, string> = {
+  "Post-Match Recovery": "The first 24-48 hours after a game — protocols that accelerate healing.",
+  "Mobility Reset": "Hip openers, spine flows, and joint maintenance routines.",
+  "Sleep Recovery": "Better sleep habits for faster recovery and performance.",
+  "Hydration Strategy": "Pre, during, and post-match hydration protocols.",
+  "Muscle Soreness Management": "Active recovery and load management for sore muscles.",
+};
 
 export default function RecoveryHub() {
+  const categories = RECOVERY_CATEGORIES.map(cat => ({
+    icon: categoryIcons[cat] || Heart,
+    title: cat,
+    desc: categoryDescs[cat] || "",
+    count: recoveryRoutines.filter(r => r.category === cat).length,
+  }));
+
+  const featuredRoutines = recoveryRoutines.slice(0, 6);
+
   return (
     <>
       <section className="relative py-24 md:py-32">
@@ -42,7 +49,7 @@ export default function RecoveryHub() {
               Recover smarter. Come back stronger.
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-lg text-primary-foreground/80 mb-8">
-              Recovery is not a luxury — it's the foundation. Mobility, sleep, hydration, and load management designed for players 40+.
+              {recoveryRoutines.length} recovery routines covering mobility, sleep, hydration, and load management designed for players 40+.
             </motion.p>
           </motion.div>
         </div>
@@ -51,13 +58,15 @@ export default function RecoveryHub() {
       <section className="section-band">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Recovery Areas</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
             {categories.map((c, i) => (
-              <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp} className="card-premium p-5 group cursor-pointer">
-                <c.icon className="h-6 w-6 text-green-light mb-3" />
-                <h3 className="font-serif text-lg font-semibold mb-1">{c.title}</h3>
-                <p className="text-xs text-muted-foreground mb-2">{c.desc}</p>
-                <span className="text-xs font-medium text-green-light">{c.count} resources</span>
+              <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={`/category/recovery/${encodeURIComponent(c.title)}`} className="card-premium p-5 group cursor-pointer block h-full">
+                  <c.icon className="h-6 w-6 text-green-light mb-3" />
+                  <h3 className="font-serif text-lg font-semibold mb-1">{c.title}</h3>
+                  <p className="text-xs text-muted-foreground mb-2">{c.desc}</p>
+                  <span className="text-xs font-medium text-green-light">{c.count} routines</span>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -68,14 +77,17 @@ export default function RecoveryHub() {
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Recovery Routines</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {routines.map((r, i) => (
-              <motion.div key={r.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp} className="card-premium p-5">
-                <h3 className="font-serif text-lg font-semibold mb-2">{r.title}</h3>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  <span className="px-2 py-1 rounded-full bg-muted text-muted-foreground">{r.time}</span>
-                  <span className="px-2 py-1 rounded-full bg-muted text-muted-foreground">{r.focus}</span>
-                  <span className="px-2 py-1 rounded-full bg-muted text-muted-foreground">{r.level}</span>
-                </div>
+            {featuredRoutines.map((r, i) => (
+              <motion.div key={r.slug} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={`/recovery/${r.slug}`} className="card-premium p-5 block group">
+                  <h3 className="font-serif text-lg font-semibold mb-2 group-hover:text-green-light transition-colors">{r.title}</h3>
+                  <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{r.description}</p>
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <span className="px-2 py-1 rounded-full bg-muted text-muted-foreground">{r.duration}</span>
+                    <span className="px-2 py-1 rounded-full bg-muted text-muted-foreground">{r.bodyArea}</span>
+                    <span className="px-2 py-1 rounded-full bg-muted text-muted-foreground">{r.category}</span>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
