@@ -57,7 +57,7 @@ export function SiteHeader() {
     >
       <div className="container-content flex items-center justify-between h-16 lg:h-[4.25rem]">
         <Link to="/" className="flex items-center gap-0.5 font-serif text-xl font-bold tracking-tight">
-          <span className={cn(scrolled ? "text-green-light" : "text-primary-foreground/90")}>Work</span>
+          <span className={cn(scrolled ? "text-primary" : "text-primary-foreground/90")}>Work</span>
           <span className={cn(scrolled ? "text-foreground" : "text-primary-foreground")}>Life</span>
           <span className={cn(scrolled ? "text-accent" : "text-gold-light")}>Soccer</span>
         </Link>

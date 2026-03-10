@@ -56,7 +56,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="font-serif text-lg font-bold block mb-4">
-              <span className="text-green-muted">Work</span>Life<span className="text-gold-light">Soccer</span>
+              <span className="text-primary-foreground/70">Work</span>Life<span className="text-gold-light">Soccer</span>
             </Link>
             <p className="text-primary-foreground/60 text-sm leading-relaxed">
               Helping adult soccer players stay in the game longer through smarter training, stronger recovery, and healthier mindset.

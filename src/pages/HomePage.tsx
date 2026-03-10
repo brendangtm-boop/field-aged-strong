@@ -21,8 +21,8 @@ import { fadeUp } from "@/lib/animations";
 const longevityPillars = [
   { icon: Dumbbell, title: "Train Smart", desc: "Soccer-specific programs built for adult bodies. Age-appropriate intensity, progressive overload, and injury-aware scheduling.", color: "text-green-light" },
   { icon: Heart, title: "Recover Better", desc: "Post-match protocols, mobility flows, sleep optimization, and load management designed for players over 40.", color: "text-accent" },
-  { icon: Shield, title: "Strengthen the Body", desc: "Functional strength that protects joints, supports movement quality, and builds durability for years of play.", color: "text-green-light" },
-  { icon: Brain, title: "Develop the Mindset", desc: "Confidence building, pre-match focus, emotional recovery, and resilience tools for the aging athlete.", color: "text-accent" },
+  { icon: Shield, title: "Build Strength", desc: "Functional strength that protects joints, supports movement quality, and builds durability for years of play.", color: "text-green-light" },
+  { icon: Brain, title: "Develop Mindset", desc: "Confidence building, pre-match focus, emotional recovery, and resilience tools for the aging athlete.", color: "text-accent" },
   { icon: Users, title: "Stay Connected", desc: "Accountability groups, shared goals, match reflection, and a community of players who understand your journey.", color: "text-green-light" },
 ];
 
@@ -80,12 +80,12 @@ export default function HomePage() {
               Soccer doesn't have to end in your 30s. With the right structure, recovery, and mindset, players can stay strong and competitive well into their 40s and 50s.
             </motion.p>
             <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-3">
-              <Link to="/start-here">
-                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">Start Your System</Button>
-              </Link>
               <Link to="/training">
+                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">Start Training</Button>
+              </Link>
+              <Link to="/exercise-coach">
                 <Button variant="hero-outline" size="xl" className="w-full sm:w-auto">
-                  <Play className="h-4 w-4" /> Explore Training
+                  <Compass className="h-4 w-4" /> Build My Weekly Plan
                 </Button>
               </Link>
             </motion.div>
@@ -95,9 +95,9 @@ export default function HomePage() {
           <div className="container-content py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               {[
-                { icon: CheckCircle, label: "Trusted Guidance" },
-                { icon: Dumbbell, label: "Structured Training" },
-                { icon: Heart, label: "Recovery-First Approach" },
+                { icon: Dumbbell, label: "Smart Training" },
+                { icon: Heart, label: "Recovery Science" },
+                { icon: Shield, label: "Age-Smart Programs" },
                 { icon: Users, label: "Community Support" },
               ].map(s => (
                 <div key={s.label} className="flex items-center justify-center gap-2">
@@ -411,7 +411,7 @@ export default function HomePage() {
         <div className="container-content">
           <div className="relative rounded-3xl overflow-hidden bg-primary p-8 md:p-16 lg:p-20">
             <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
-              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 70% 30%, hsl(36 78% 50% / 0.4), transparent 60%)' }} />
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 70% 30%, hsl(25 100% 50% / 0.4), transparent 60%)' }} />
             </div>
             <div className="relative text-center max-w-2xl mx-auto">
               <p className="badge-gold mb-6">Membership</p>
