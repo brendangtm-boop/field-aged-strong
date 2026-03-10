@@ -21,8 +21,8 @@ import { fadeUp } from "@/lib/animations";
 const longevityPillars = [
   { icon: Dumbbell, title: "Train Smart", desc: "Soccer-specific programs built for adult bodies. Age-appropriate intensity, progressive overload, and injury-aware scheduling.", color: "text-green-light" },
   { icon: Heart, title: "Recover Better", desc: "Post-match protocols, mobility flows, sleep optimization, and load management designed for players over 40.", color: "text-accent" },
-  { icon: Shield, title: "Strengthen the Body", desc: "Functional strength that protects joints, supports movement quality, and builds durability for years of play.", color: "text-green-light" },
-  { icon: Brain, title: "Develop the Mindset", desc: "Confidence building, pre-match focus, emotional recovery, and resilience tools for the aging athlete.", color: "text-accent" },
+  { icon: Shield, title: "Build Strength", desc: "Functional strength that protects joints, supports movement quality, and builds durability for years of play.", color: "text-green-light" },
+  { icon: Brain, title: "Develop Mindset", desc: "Confidence building, pre-match focus, emotional recovery, and resilience tools for the aging athlete.", color: "text-accent" },
   { icon: Users, title: "Stay Connected", desc: "Accountability groups, shared goals, match reflection, and a community of players who understand your journey.", color: "text-green-light" },
 ];
 
