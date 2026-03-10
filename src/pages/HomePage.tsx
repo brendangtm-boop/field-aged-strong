@@ -95,9 +95,9 @@ export default function HomePage() {
           <div className="container-content py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               {[
-                { icon: CheckCircle, label: "Trusted Guidance" },
-                { icon: Dumbbell, label: "Structured Training" },
-                { icon: Heart, label: "Recovery-First Approach" },
+                { icon: Dumbbell, label: "Smart Training" },
+                { icon: Heart, label: "Recovery Science" },
+                { icon: Shield, label: "Age-Smart Programs" },
                 { icon: Users, label: "Community Support" },
               ].map(s => (
                 <div key={s.label} className="flex items-center justify-center gap-2">

@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
-import { ArrowRight, Clock, Flame, Shield, Zap, RotateCcw, Target, Heart, Activity, Brain } from "lucide-react";
+import { ArrowRight, Clock, Flame, Shield, Zap, RotateCcw, Target, Heart, Activity, Brain, Calendar, Play } from "lucide-react";
 import trainingImg from "@/assets/training-hero.jpg";
 import { workouts } from "@/data/workouts";
+import { trainingPrograms } from "@/data/programs";
 import { TRAINING_CATEGORIES } from "@/data/types";
-
 import { fadeUp } from "@/lib/animations";
 
 const categoryIcons: Record<string, any> = {
@@ -31,13 +32,24 @@ const categoryDescs: Record<string, string> = {
   "Quick Sessions": "15–20 minute workouts for the time-crunched player.",
 };
 
-const filters = [
-  { label: "By Goal", options: ["Build Fitness", "Prevent Injury", "Return to Play", "Maintain Strength", "Improve Speed"] },
-  { label: "By Time", options: ["15 min", "20 min", "30 min", "45 min", "60 min"] },
-  { label: "By Body", options: ["Lower Body", "Upper Body", "Core", "Full Body", "Mobility"] },
+const filterGroups = [
+  { label: "Goal", options: ["Build Fitness", "Prevent Injury", "Improve Speed", "Return to Play", "Maintain Strength"] },
+  { label: "Time", options: ["15 min", "20 min", "30 min", "45 min"] },
+  { label: "Body Area", options: ["Lower Body", "Upper Body", "Core", "Full Body", "Mobility"] },
 ];
 
 export default function TrainingHub() {
+  const [activeFilters, setActiveFilters] = useState<Record<string, string | null>>({
+    Goal: null, Time: null, "Body Area": null,
+  });
+
+  const toggleFilter = (group: string, option: string) => {
+    setActiveFilters(prev => ({
+      ...prev,
+      [group]: prev[group] === option ? null : option,
+    }));
+  };
+
   const categories = TRAINING_CATEGORIES.map(cat => ({
     icon: categoryIcons[cat] || Target,
     title: cat,
@@ -45,14 +57,7 @@ export default function TrainingHub() {
     count: workouts.filter(w => w.category === cat).length,
   }));
 
-  const featured = workouts.slice(0, 4).map(w => ({
-    slug: w.slug,
-    title: w.title,
-    level: w.difficulty,
-    duration: w.duration,
-    category: w.category,
-    badge: w.difficulty === "Advanced" ? "Premium" : w.difficulty === "Beginner" ? "New" : "Popular",
-  }));
+  const featured = workouts.slice(0, 6);
 
   return (
     <>
@@ -71,8 +76,9 @@ export default function TrainingHub() {
             <motion.p variants={fadeUp} custom={2} className="text-lg text-primary-foreground/80 mb-8 max-w-lg">
               {workouts.length} soccer-specific workouts, plans, and exercise guides designed for adult players who want to stay competitive.
             </motion.p>
-            <motion.div variants={fadeUp} custom={3}>
+            <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-3">
               <Link to="/exercise-coach"><Button variant="gold" size="lg">Try Exercise Coach <ArrowRight className="h-4 w-4" /></Button></Link>
+              <Link to="#programs"><Button variant="hero-outline" size="lg">View Programs</Button></Link>
             </motion.div>
           </motion.div>
         </div>
@@ -84,12 +90,20 @@ export default function TrainingHub() {
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-8">Find your training</h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {filters.map(f => (
+              {filterGroups.map(f => (
                 <div key={f.label} className="card-premium p-5">
                   <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">{f.label}</h3>
                   <div className="flex flex-wrap gap-2">
                     {f.options.map(o => (
-                      <button key={o} className="px-3 py-1.5 rounded-full bg-muted text-xs font-medium text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors">
+                      <button
+                        key={o}
+                        onClick={() => toggleFilter(f.label, o)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                          activeFilters[f.label] === o
+                            ? "bg-accent text-accent-foreground shadow-sm"
+                            : "bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+                        }`}
+                      >
                         {o}
                       </button>
                     ))}
@@ -124,18 +138,25 @@ export default function TrainingHub() {
       <section className="section-band">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Featured Workouts</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {featured.map((p, i) => (
-              <motion.div key={p.slug} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-                <Link to={`/training/${p.slug}`} className="card-premium p-6 flex items-start justify-between gap-4 group block">
-                  <div>
-                    {p.badge && <span className={p.badge === "Premium" ? "badge-gold mb-2 block w-fit" : "badge-green mb-2 block w-fit"}>{p.badge}</span>}
-                    <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-green-light transition-colors">{p.title}</h3>
-                    <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                      <span>{p.level}</span><span>•</span><span>{p.duration}</span><span>•</span><span>{p.category}</span>
-                    </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((w, i) => (
+              <motion.div key={w.slug} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={`/training/${w.slug}`} className="card-premium p-6 block h-full group">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className={w.difficulty === "Advanced" ? "badge-gold text-[10px]" : "badge-green text-[10px]"}>
+                      {w.difficulty}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{w.category}</span>
                   </div>
-                  <Button variant="outline" size="sm">View</Button>
+                  <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-green-light transition-colors">{w.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{w.description}</p>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+                    <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {w.duration}</span>
+                    <span className="flex items-center gap-1"><Zap className="h-3.5 w-3.5" /> {w.difficulty}</span>
+                  </div>
+                  <Button variant="gold" size="sm" className="w-full">
+                    Start Session <ArrowRight className="h-3.5 w-3.5" />
+                  </Button>
                 </Link>
               </motion.div>
             ))}
@@ -143,8 +164,53 @@ export default function TrainingHub() {
         </div>
       </section>
 
+      {/* Training Programs */}
+      <section id="programs" className="section-band-alt">
+        <div className="container-content">
+          <div className="text-center mb-12">
+            <p className="badge-gold mb-4">Structured Programs</p>
+            <h2 className="text-3xl md:text-[2.75rem] font-bold mb-4">Multi-week training programs</h2>
+            <p className="text-editorial mx-auto">Follow a structured plan designed to build fitness progressively and keep you injury-free.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {trainingPrograms.map((p, i) => (
+              <motion.div key={p.slug} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <div className="card-premium p-6 md:p-7 h-full">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl gradient-green flex items-center justify-center">
+                      <Calendar className="h-5 w-5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-lg font-semibold">{p.title}</h3>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <span>{p.duration}</span><span>•</span><span>{p.difficulty}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{p.description}</p>
+                  <div className="space-y-2 mb-4">
+                    {p.weeklyStructure.slice(0, 3).map(w => (
+                      <div key={w.week} className="flex items-center gap-3 p-2.5 rounded-lg bg-surface text-xs">
+                        <span className="font-bold text-green-light w-14">Week {w.week}</span>
+                        <span className="text-muted-foreground">{w.focus}</span>
+                      </div>
+                    ))}
+                    {p.weeklyStructure.length > 3 && (
+                      <p className="text-xs text-muted-foreground pl-2">+ {p.weeklyStructure.length - 3} more weeks</p>
+                    )}
+                  </div>
+                  <Button variant="default" size="sm" className="w-full">
+                    <Play className="h-3.5 w-3.5" /> Start Program
+                  </Button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="section-band-alt">
+      <section className="section-band">
         <div className="container-content text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Not sure where to start?</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">Let the Exercise Coach build a personalized plan based on your goals, fitness level, and schedule.</p>
