@@ -96,7 +96,7 @@
   h2 { letter-spacing: -0.02em; }
 
   ::selection {
-    background: hsl(36 78% 50% / 0.2);
+    background: hsl(25 100% 50% / 0.2);
     color: hsl(var(--foreground));
   }
 }
