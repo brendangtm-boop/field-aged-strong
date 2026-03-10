@@ -80,12 +80,12 @@ export default function HomePage() {
               Soccer doesn't have to end in your 30s. With the right structure, recovery, and mindset, players can stay strong and competitive well into their 40s and 50s.
             </motion.p>
             <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-3">
-              <Link to="/start-here">
-                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">Start Your System</Button>
-              </Link>
               <Link to="/training">
+                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">Start Training</Button>
+              </Link>
+              <Link to="/exercise-coach">
                 <Button variant="hero-outline" size="xl" className="w-full sm:w-auto">
-                  <Play className="h-4 w-4" /> Explore Training
+                  <Compass className="h-4 w-4" /> Build My Weekly Plan
                 </Button>
               </Link>
             </motion.div>
