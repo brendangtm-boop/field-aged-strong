@@ -411,7 +411,7 @@ export default function HomePage() {
         <div className="container-content">
           <div className="relative rounded-3xl overflow-hidden bg-primary p-8 md:p-16 lg:p-20">
             <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
-              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 70% 30%, hsl(36 78% 50% / 0.4), transparent 60%)' }} />
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 70% 30%, hsl(25 100% 50% / 0.4), transparent 60%)' }} />
             </div>
             <div className="relative text-center max-w-2xl mx-auto">
               <p className="badge-gold mb-6">Membership</p>
