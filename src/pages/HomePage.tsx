@@ -78,12 +78,12 @@ export default function HomePage() {
             <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-3">
               <Link to="/tracker">
                 <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">
-                  <Calendar className="h-5 w-5" /> See My Weekly Plan
+                  <Calendar className="h-5 w-5" /> Plan My Week
                 </Button>
               </Link>
               <Link to="/training">
                 <Button variant="hero-outline" size="xl" className="w-full sm:w-auto">
-                  Start Training
+                  Browse Training
                 </Button>
               </Link>
             </motion.div>

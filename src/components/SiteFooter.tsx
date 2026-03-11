@@ -3,24 +3,24 @@ import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const footerLinks = {
-  Platform: [
-    { label: "Training Hub", href: "/training" },
-    { label: "Recovery Hub", href: "/recovery" },
-    { label: "Mindset Hub", href: "/mindset" },
-    { label: "Exercise Coach", href: "/exercise-coach" },
-    { label: "Mindset Coach", href: "/mindset-coach" },
+  "Core System": [
+    { label: "Weekly Plan", href: "/tracker" },
+    { label: "Training", href: "/training" },
+    { label: "Recovery", href: "/recovery" },
+    { label: "Match Reflection", href: "/match-reflection" },
+    { label: "Progress Dashboard", href: "/tracker" },
   ],
-  Resources: [
+  Explore: [
     { label: "Editorial Library", href: "/library" },
     { label: "My 2cts", href: "/my2cts" },
     { label: "Gear Guide", href: "/gear" },
     { label: "Community", href: "/community" },
-    { label: "Daily Tracker", href: "/tracker" },
+    { label: "Mindset Hub", href: "/mindset" },
   ],
   Company: [
     { label: "About & Mission", href: "/about" },
     { label: "Membership Plans", href: "/membership" },
-    { label: "Contact", href: "/about" },
+    { label: "Start Here", href: "/start-here" },
   ],
 };
 
