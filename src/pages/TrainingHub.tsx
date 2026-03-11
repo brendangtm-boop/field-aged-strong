@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { ArrowRight, Clock, Flame, Shield, Zap, RotateCcw, Target, Heart, Activity, Brain, Calendar, Play } from "lucide-react";
 import trainingImg from "@/assets/training-hero.jpg";
+import trainingDrillsImg from "@/assets/training-drills.jpg";
 import { workouts } from "@/data/workouts";
 import { trainingPrograms } from "@/data/programs";
 import { TRAINING_CATEGORIES } from "@/data/types";
@@ -37,6 +40,9 @@ const filterGroups = [
   { label: "Time", options: ["15 min", "20 min", "30 min", "45 min"] },
   { label: "Body Area", options: ["Lower Body", "Upper Body", "Core", "Full Body", "Mobility"] },
 ];
+
+const trainingInsights = getMy2ctsByContext("training");
+const programInsight = getMy2ctsByContext("programs")[0];
 
 export default function TrainingHub() {
   const [activeFilters, setActiveFilters] = useState<Record<string, string | null>>({
@@ -115,8 +121,30 @@ export default function TrainingHub() {
         </div>
       </section>
 
-      {/* Categories */}
+      {/* My2cts Training Insight */}
       <section className="section-band-alt">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="image-card aspect-[16/10] overflow-hidden rounded-2xl">
+              <img src={trainingDrillsImg} alt="Adult players doing agility drills at training" className="w-full h-full object-cover" />
+            </div>
+            <div className="space-y-4">
+              {trainingInsights.slice(0, 2).map(insight => (
+                <My2ctsCallout
+                  key={insight.title}
+                  title={insight.title}
+                  quote={insight.quote}
+                  takeaway={insight.takeaway}
+                  slug={insight.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="section-band">
         <div className="container-content">
           <h2 className="text-3xl md:text-4xl font-bold mb-10">Training Categories</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -137,7 +165,7 @@ export default function TrainingHub() {
       </section>
 
       {/* Featured Workouts */}
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Featured Workouts</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -167,7 +195,7 @@ export default function TrainingHub() {
       </section>
 
       {/* Training Programs */}
-      <section id="programs" className="section-band-alt">
+      <section id="programs" className="section-band">
         <div className="container-content">
           <div className="text-center mb-12">
             <p className="badge-gold mb-4">Structured Programs</p>
@@ -208,11 +236,23 @@ export default function TrainingHub() {
               </motion.div>
             ))}
           </div>
+
+          {/* My2cts Program Insight */}
+          {programInsight && (
+            <div className="mt-10">
+              <My2ctsCallout
+                title={programInsight.title}
+                quote={programInsight.quote}
+                takeaway={programInsight.takeaway}
+                slug={programInsight.slug}
+              />
+            </div>
+          )}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Not sure where to start?</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">Let the Exercise Coach build a personalized plan based on your goals, fitness level, and schedule.</p>

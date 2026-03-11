@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { ArrowRight, Brain, Heart, Target, Shield, RotateCcw, Flame, Users, Sparkles, ClipboardCheck, Dumbbell } from "lucide-react";
 import mindsetImg from "@/assets/mindset-hero.jpg";
-
+import mindsetReflectionImg from "@/assets/mindset-reflection.jpg";
 import { fadeUp } from "@/lib/animations";
 
 const topics = [
@@ -26,6 +28,8 @@ const modules = [
   { title: "Resilience After Poor Performance", desc: "How to bounce back when you let yourself down.", type: "Exercise" },
   { title: "Staying Committed Around Family", desc: "Balancing playing time with real-world responsibilities.", type: "Guide" },
 ];
+
+const mindsetInsights = getMy2ctsByContext("mindset");
 
 export default function MindsetHub() {
   return (
@@ -66,7 +70,29 @@ export default function MindsetHub() {
         </div>
       </section>
 
+      {/* My2cts Mindset Insights */}
       <section className="section-band-alt">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="image-card aspect-[16/10] overflow-hidden rounded-2xl">
+              <img src={mindsetReflectionImg} alt="Thoughtful player reflecting after a match" className="w-full h-full object-cover" />
+            </div>
+            <div className="space-y-4">
+              {mindsetInsights.slice(0, 2).map(insight => (
+                <My2ctsCallout
+                  key={insight.title}
+                  title={insight.title}
+                  quote={insight.quote}
+                  takeaway={insight.takeaway}
+                  slug={insight.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-band">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Mindset Modules</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -81,7 +107,7 @@ export default function MindsetHub() {
         </div>
       </section>
 
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Your mind is part of your game.</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">Get personalized mindset support from our AI-powered Mindset Coach.</p>
