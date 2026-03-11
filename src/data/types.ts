@@ -64,3 +64,13 @@ export const ARTICLE_CATEGORIES = [
   "Community",
   "Return to Play",
 ] as const;
+
+export interface My2ctsEntry {
+  slug: string;
+  title: string;
+  date: string;
+  author: string;
+  teaser: string;
+  body: string[];
+  tags: string[];
+}
