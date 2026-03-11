@@ -87,21 +87,21 @@ export default function TrainingHub() {
       {/* Filters */}
       <section className="section-band">
         <div className="container-content">
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-8">Find your training</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+          <div className="mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold mb-10">Find your training</h2>
+            <div className="grid md:grid-cols-3 gap-8">
               {filterGroups.map(f => (
-                <div key={f.label} className="card-premium p-5">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">{f.label}</h3>
-                  <div className="flex flex-wrap gap-2">
+                <div key={f.label} className="card-premium p-6 md:p-7">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-foreground mb-4">{f.label}</h3>
+                  <div className="flex flex-wrap gap-2.5">
                     {f.options.map(o => (
                       <button
                         key={o}
                         onClick={() => toggleFilter(f.label, o)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                        className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 border ${
                           activeFilters[f.label] === o
-                            ? "bg-accent text-accent-foreground shadow-sm"
-                            : "bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+                            ? "bg-accent text-accent-foreground border-accent shadow-sm scale-[1.03]"
+                            : "bg-muted/60 text-foreground/70 border-border/40 hover:bg-primary hover:text-primary-foreground hover:border-primary"
                         }`}
                       >
                         {o}
