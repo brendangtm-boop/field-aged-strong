@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
 import { My2ctsCallout } from "@/components/My2ctsCallout";
 import { getMy2ctsByContext } from "@/data/my2cts-contextual";
+import { WeeklyPlanCard } from "@/components/WeeklyPlanCard";
+import { QuickStartPanel } from "@/components/QuickStartPanel";
+import { defaultWeeklyPlan, quickStarts } from "@/data/weeklyPlan";
 import {
   Target, Heart, Brain, Shield, RotateCcw, Flame,
   Users, Sparkles, ArrowRight, Star, CheckCircle,
@@ -32,15 +35,6 @@ const longevityPillars = [
   { icon: Users, title: "Stay Connected", desc: "Accountability groups, shared goals, match reflection, and a community of players who understand your journey.", color: "text-green-light" },
 ];
 
-const goals = [
-  { icon: Target, title: "Keep Playing Longer", desc: "Sustainable training that protects your body.", link: "/training" },
-  { icon: Flame, title: "Improve Fitness", desc: "Match-ready conditioning for adult physiology.", link: "/training" },
-  { icon: Heart, title: "Recover Better", desc: "Smart protocols that fit your schedule.", link: "/recovery" },
-  { icon: Shield, title: "Prevent Injury", desc: "Prehab, warm-ups, and load management.", link: "/recovery" },
-  { icon: Brain, title: "Build Confidence", desc: "Mental tools to play freely again.", link: "/mindset" },
-  { icon: RotateCcw, title: "Return to the Game", desc: "Come back stronger after time away.", link: "/start-here" },
-];
-
 const platformTools = [
   { icon: Dumbbell, title: "Exercise Coach", desc: "AI-powered sessions tailored to your energy, soreness, and schedule.", href: "/exercise-coach", badge: "AI Feature" },
   { icon: Brain, title: "Mindset Coach", desc: "Private coaching for confidence, motivation, and emotional resilience.", href: "/mindset-coach", badge: "AI Feature" },
@@ -60,13 +54,6 @@ const testimonials = [
   { name: "Marcus T.", age: 52, quote: "The exercise coach gives me a plan in 30 seconds. Quick sessions when I'm busy, full sessions when I have energy. Game-changer.", role: "Goalkeeper, Veterans League", initials: "MT" },
 ];
 
-const stats = [
-  { value: "2,400+", label: "Active players" },
-  { value: "50+", label: "Training plans" },
-  { value: "87%", label: "Play more consistently" },
-  { value: "4.9", label: "Average rating" },
-];
-
 const trainingInsight = getMy2ctsByContext("training")[0];
 const recoveryInsight = getMy2ctsByContext("recovery")[0];
 
@@ -81,20 +68,22 @@ export default function HomePage() {
         </div>
         <div className="relative container-content py-28 md:py-36 lg:py-44">
           <motion.div initial="hidden" animate="visible" className="max-w-2xl">
-            <motion.p variants={fadeUp} custom={0} className="badge-white mb-6">For players 40 and beyond</motion.p>
+            <motion.p variants={fadeUp} custom={0} className="badge-white mb-6">Your Soccer Longevity System</motion.p>
             <motion.h1 variants={fadeUp} custom={1} className="text-4xl sm:text-5xl lg:text-[3.75rem] font-bold text-primary-foreground leading-[1.08] mb-6 text-balance">
-              Stay in the Game Longer
+              What should I do this week to stay in the game?
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-base sm:text-lg text-primary-foreground/75 mb-10 max-w-lg leading-relaxed">
-              Soccer doesn't have to end in your 30s. With the right structure, recovery, and mindset, players can stay strong and competitive well into their 40s and 50s.
+              A weekly training system for players 40+ — structured sessions, smart recovery, and real guidance so you can keep playing for years.
             </motion.p>
             <motion.div variants={fadeUp} custom={3} className="flex flex-col sm:flex-row gap-3">
-              <Link to="/training">
-                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">Start Training</Button>
+              <Link to="/tracker">
+                <Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">
+                  <Calendar className="h-5 w-5" /> See My Weekly Plan
+                </Button>
               </Link>
-              <Link to="/exercise-coach">
+              <Link to="/training">
                 <Button variant="hero-outline" size="xl" className="w-full sm:w-auto">
-                  <Compass className="h-4 w-4" /> Build My Weekly Plan
+                  Start Training
                 </Button>
               </Link>
             </motion.div>
@@ -104,16 +93,54 @@ export default function HomePage() {
           <div className="container-content py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               {[
+                { icon: Calendar, label: "Weekly Plan" },
                 { icon: Dumbbell, label: "Smart Training" },
                 { icon: Heart, label: "Recovery Science" },
-                { icon: Shield, label: "Age-Smart Programs" },
-                { icon: Users, label: "Community Support" },
+                { icon: TrendingUp, label: "Progress Tracking" },
               ].map(s => (
                 <div key={s.label} className="flex items-center justify-center gap-2">
                   <s.icon className="h-4 w-4 text-gold-light" />
                   <p className="text-xs md:text-sm text-primary-foreground/80 font-medium">{s.label}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Weekly Plan Preview ── */}
+      <section className="section-band">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
+            <div className="lg:col-span-3">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="badge-gold">Your Week</span>
+              </div>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold mb-3 text-balance">Train, recover, play — all planned out.</h2>
+              <p className="text-editorial mb-8">Every week includes the right mix of training, recovery, mobility, and rest — structured around your match schedule.</p>
+              <WeeklyPlanCard plan={defaultWeeklyPlan} compact />
+              <div className="mt-6 flex gap-3">
+                <Link to="/tracker">
+                  <Button variant="default" size="lg">Open Full Dashboard <ArrowRight className="h-4 w-4" /></Button>
+                </Link>
+              </div>
+            </div>
+            <div className="lg:col-span-2">
+              <QuickStartPanel quickStarts={quickStarts} />
+              
+              {/* Context recommendation */}
+              <div className="mt-6 card-premium-static p-5 bg-green-subtle border-primary/10">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl gradient-green flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="h-4 w-4 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-green-light mb-1">Recommended</p>
+                    <p className="text-sm font-semibold mb-0.5">Recovery Mobility Session</p>
+                    <p className="text-xs text-muted-foreground">Based on 3 completed training sessions this week, a mobility session will keep you fresh for Saturday's match.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -142,33 +169,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Choose Your Focus ── */}
-      <section className="section-band">
-        <div className="container-content">
-          <div className="text-center mb-16 md:mb-20">
-            <p className="badge-green mb-4">Choose Your Focus</p>
-            <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5 text-balance">What matters most to you right now?</h2>
-            <p className="text-editorial mx-auto">Every player's journey is different. Start with the area that will make the biggest impact.</p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {goals.map((g, i) => (
-              <motion.div key={g.title} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} custom={i} variants={fadeUp}>
-                <Link to={g.link} className="card-premium p-6 md:p-7 block h-full group">
-                  <div className="w-11 h-11 rounded-xl bg-primary/5 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
-                    <g.icon className="h-5 w-5 text-green-light" />
-                  </div>
-                  <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-green-light transition-colors">{g.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{g.desc}</p>
-                  <span className="inline-flex items-center gap-1.5 mt-4 text-xs font-semibold text-green-light opacity-0 group-hover:opacity-100 transition-opacity">
-                    Explore <ArrowRight className="h-3 w-3" />
-                  </span>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── From the Field — My2cts Insights ── */}
       <section className="section-band-warm">
         <div className="container-content">
@@ -188,20 +188,10 @@ export default function HomePage() {
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="space-y-4">
               {trainingInsight && (
-                <My2ctsCallout
-                  title={trainingInsight.title}
-                  quote={trainingInsight.quote}
-                  takeaway={trainingInsight.takeaway}
-                  slug={trainingInsight.slug}
-                />
+                <My2ctsCallout title={trainingInsight.title} quote={trainingInsight.quote} takeaway={trainingInsight.takeaway} slug={trainingInsight.slug} />
               )}
               {recoveryInsight && (
-                <My2ctsCallout
-                  title={recoveryInsight.title}
-                  quote={recoveryInsight.quote}
-                  takeaway={recoveryInsight.takeaway}
-                  slug={recoveryInsight.slug}
-                />
+                <My2ctsCallout title={recoveryInsight.title} quote={recoveryInsight.quote} takeaway={recoveryInsight.takeaway} slug={recoveryInsight.slug} />
               )}
             </motion.div>
           </div>
@@ -509,7 +499,7 @@ export default function HomePage() {
               <p className="badge-gold mb-6">Membership</p>
               <h2 className="text-3xl md:text-5xl font-bold text-primary-foreground mb-5 text-balance">Build Your System for Soccer Longevity</h2>
               <p className="text-base md:text-lg text-primary-foreground/70 mb-10 leading-relaxed">
-                Unlock premium training plans, AI coaching, progress tracking, and an exclusive community of committed adult players.
+                Unlock personalized weekly plans, AI coaching, advanced tracking, and an exclusive community of committed adult players.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <Link to="/membership"><Button variant="gold" size="xl" className="shadow-glow w-full sm:w-auto">View Plans & Pricing</Button></Link>
@@ -528,8 +518,8 @@ export default function HomePage() {
             <p className="text-editorial mx-auto mb-10">
               Join thousands of adult soccer players building better habits, recovering faster, and enjoying the game more than ever.
             </p>
-            <Link to="/start-here">
-              <Button variant="gold" size="xl" className="shadow-glow">Start Your System <ArrowRight className="h-4 w-4" /></Button>
+            <Link to="/tracker">
+              <Button variant="gold" size="xl" className="shadow-glow">Start Your Weekly Plan <ArrowRight className="h-4 w-4" /></Button>
             </Link>
           </motion.div>
         </div>

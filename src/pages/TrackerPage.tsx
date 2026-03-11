@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { WeeklyPlanCard } from "@/components/WeeklyPlanCard";
+import { QuickStartPanel } from "@/components/QuickStartPanel";
 import { RecommendedNext } from "@/components/RecommendedNext";
 import { My2ctsCallout } from "@/components/My2ctsCallout";
 import { getMy2ctsByContext } from "@/data/my2cts-contextual";
+import { defaultWeeklyPlan, quickStarts } from "@/data/weeklyPlan";
+import type { PlannedSession, SessionStatus } from "@/data/weeklyPlan";
 import {
   ArrowRight, Activity, Moon, Zap, Brain, TrendingUp,
   Flame, CheckCircle, Heart, Target, Dumbbell,
@@ -19,29 +24,13 @@ const todaySummary = {
   confidence: 8,
 };
 
-const weeklyStats = [
-  { label: "Training", value: "3", target: "3", icon: Activity, color: "text-green-light" },
-  { label: "Matches", value: "1", target: "1", icon: Target, color: "text-accent" },
-  { label: "Recovery", value: "2", target: "3", icon: Heart, color: "text-green-light" },
-  { label: "Mindset", value: "4", target: "5", icon: Brain, color: "text-accent" },
-];
-
-const weeklyLoop = [
-  { day: "Mon", label: "Training Plan", icon: Dumbbell, type: "Train", active: true, done: true },
-  { day: "Tue", label: "Mobility Flow", icon: Heart, type: "Recover", active: false, done: true },
-  { day: "Wed", label: "Conditioning", icon: Activity, type: "Train", active: false, done: true },
-  { day: "Thu", label: "Mindset Reflection", icon: Brain, type: "Mindset", active: false, done: false },
-  { day: "Fri", label: "Light Preparation", icon: Zap, type: "Prepare", active: false, done: false },
-  { day: "Sat", label: "Match Day", icon: Target, type: "Match", active: false, done: false },
-  { day: "Sun", label: "Recovery Session", icon: Moon, type: "Recover", active: false, done: false },
-];
-
-const recentSessions = [
-  { title: "Match: Sunday League vs. Riverside FC", type: "Match", date: "Today", duration: "90 min", typeColor: "bg-primary/8 text-primary" },
-  { title: "Pre-Match Activation Warm-up", type: "Training", date: "Yesterday", duration: "15 min", typeColor: "bg-green-subtle text-green-light" },
-  { title: "Lower Body Mobility Flow", type: "Recovery", date: "2 days ago", duration: "20 min", typeColor: "bg-accent/10 text-gold-dark" },
-  { title: "Post-Game Confidence Reset", type: "Mindset", date: "3 days ago", duration: "8 min", typeColor: "bg-accent/10 text-gold-dark" },
-  { title: "Strength: Legs & Core Circuit", type: "Training", date: "4 days ago", duration: "35 min", typeColor: "bg-green-subtle text-green-light" },
+const weekConsistency = [
+  { week: "W7", sessions: 5, max: 7 },
+  { week: "W8", sessions: 6, max: 7 },
+  { week: "W9", sessions: 4, max: 7 },
+  { week: "W10", sessions: 7, max: 7 },
+  { week: "W11", sessions: 5, max: 7 },
+  { week: "W12", sessions: 6, max: 7 },
 ];
 
 const habits = [
@@ -52,18 +41,58 @@ const habits = [
   { name: "Pre-Match Warm-up", streak: 8, done: true },
 ];
 
-const weekConsistency = [
-  { week: "W7", sessions: 5, max: 7 },
-  { week: "W8", sessions: 6, max: 7 },
-  { week: "W9", sessions: 4, max: 7 },
-  { week: "W10", sessions: 7, max: 7 },
-  { week: "W11", sessions: 5, max: 7 },
-  { week: "W12", sessions: 6, max: 7 },
-];
-
 const dashboardInsights = getMy2ctsByContext("dashboard");
 
+/** Context-aware recommendation based on seeded state */
+function getRecommendation(plan: PlannedSession[], energy: number, soreness: number) {
+  const completed = plan.filter(s => s.status === "completed" || s.status === "modified").length;
+  const hasUpcomingMatch = plan.some(s => s.type === "match" && s.status === "upcoming");
+
+  if (soreness >= 6) {
+    return {
+      title: "Recovery Mobility Session",
+      description: `Your soreness is high (${soreness}/10). A gentle mobility flow will help clear stiffness and speed recovery.`,
+      link: "/recovery/morning-mobility-flow",
+      type: "recovery" as const,
+    };
+  }
+  if (hasUpcomingMatch && completed >= 3) {
+    return {
+      title: "Taper — Light Preparation Only",
+      description: "You've completed 3+ sessions this week with a match coming up. Keep it light to stay fresh.",
+      link: "/training/pre-match-dynamic-stretch",
+      type: "prepare" as const,
+    };
+  }
+  if (energy <= 4) {
+    return {
+      title: "Rest Day or Light Walk",
+      description: `Your energy is low (${energy}/10). Take a rest day or a 15-minute walk — consistency matters more than intensity.`,
+      link: "/recovery",
+      type: "rest" as const,
+    };
+  }
+  return {
+    title: "Interval Endurance Builder",
+    description: "You're in good shape this week. Build match fitness with a 35-minute interval session.",
+    link: "/training/interval-endurance-builder",
+    type: "training" as const,
+  };
+}
+
 export default function TrackerPage() {
+  const [plan, setPlan] = useState<PlannedSession[]>(defaultWeeklyPlan);
+
+  const handleStatusChange = (id: string, status: SessionStatus) => {
+    setPlan(prev => prev.map(s => s.id === id ? { ...s, status } : s));
+  };
+
+  const completedCount = plan.filter(s => s.status === "completed" || s.status === "modified").length;
+  const totalMinutes = plan
+    .filter(s => s.status === "completed" || s.status === "modified")
+    .reduce((acc, s) => acc + parseInt(s.duration) || 0, 0);
+  const recommendation = getRecommendation(plan, todaySummary.energy, todaySummary.soreness);
+
   return (
     <>
       {/* Hero Banner */}
@@ -76,10 +105,10 @@ export default function TrackerPage() {
           <motion.div initial="hidden" animate="visible">
             <motion.p variants={fadeUp} custom={0} className="badge-white mb-4">Player Dashboard</motion.p>
             <motion.h1 variants={fadeUp} custom={1} className="text-3xl md:text-5xl font-bold text-primary-foreground mb-3">
-              Your Progress
+              Your Weekly System
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-primary-foreground/70 max-w-md">
-              Track training, recovery, mindset, and habits — all in one place.
+              Plan your week, log sessions, track progress — everything in one place.
             </motion.p>
           </motion.div>
         </div>
@@ -88,7 +117,8 @@ export default function TrackerPage() {
       <section className="section-band">
         <div className="container-content">
           <motion.div initial="hidden" animate="visible">
-            {/* Quick Log */}
+
+            {/* Status bar */}
             <motion.div variants={fadeUp} custom={0} className="mb-8">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-serif text-2xl font-bold">How are you feeling today?</h2>
@@ -110,8 +140,8 @@ export default function TrackerPage() {
               </div>
             </motion.div>
 
-            {/* Recommended Action */}
-            <motion.div variants={fadeUp} custom={1} className="mb-8">
+            {/* Context-aware recommendation */}
+            <motion.div variants={fadeUp} custom={0.5} className="mb-8">
               <div className="card-premium-static p-5 md:p-6 bg-green-subtle border-primary/10">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl gradient-green flex items-center justify-center flex-shrink-0">
@@ -119,80 +149,57 @@ export default function TrackerPage() {
                   </div>
                   <div className="flex-1">
                     <p className="text-xs font-bold uppercase tracking-widest text-green-light mb-1">Recommended Next</p>
-                    <p className="font-serif text-lg font-semibold mb-1">Recovery Mobility Session</p>
-                    <p className="text-sm text-muted-foreground">Based on your match today and soreness level (4/10), a 20-minute mobility flow will help you recover faster.</p>
+                    <p className="font-serif text-lg font-semibold mb-1">{recommendation.title}</p>
+                    <p className="text-sm text-muted-foreground">{recommendation.description}</p>
                   </div>
-                  <Button variant="default" size="sm" className="flex-shrink-0">
-                    Start <ChevronRight className="h-3.5 w-3.5" />
-                  </Button>
+                  <Link to={recommendation.link}>
+                    <Button variant="default" size="sm" className="flex-shrink-0">
+                      Start <ChevronRight className="h-3.5 w-3.5" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </motion.div>
 
-            {/* My2cts Dashboard Insight */}
-            {dashboardInsights[0] && (
-              <motion.div variants={fadeUp} custom={1.5} className="mb-8">
-                <My2ctsCallout
-                  title={dashboardInsights[0].title}
-                  quote={dashboardInsights[0].quote}
-                  takeaway={dashboardInsights[0].takeaway}
-                  slug={dashboardInsights[0].slug}
-                />
-              </motion.div>
-            )}
+            {/* Weekly Plan — main feature */}
+            <motion.div variants={fadeUp} custom={1} className="mb-8">
+              <WeeklyPlanCard plan={plan} onStatusChange={handleStatusChange} />
+            </motion.div>
 
-            {/* Weekly Player Loop */}
+            {/* Quick Start + My2cts */}
+            <motion.div variants={fadeUp} custom={1.5} className="grid lg:grid-cols-2 gap-8 mb-8">
+              <QuickStartPanel quickStarts={quickStarts} />
+              <div>
+                {dashboardInsights[0] && (
+                  <My2ctsCallout
+                    title={dashboardInsights[0].title}
+                    quote={dashboardInsights[0].quote}
+                    takeaway={dashboardInsights[0].takeaway}
+                    slug={dashboardInsights[0].slug}
+                  />
+                )}
+              </div>
+            </motion.div>
+
+            {/* Progress stats */}
             <motion.div variants={fadeUp} custom={2} className="mb-8">
-              <h2 className="font-serif text-xl font-semibold mb-5">The Weekly Player Loop</h2>
-              <div className="card-premium-static overflow-hidden">
-                <div className="grid grid-cols-7">
-                  {weeklyLoop.map((d) => (
-                    <div
-                      key={d.day}
-                      className={`p-3 md:p-4 text-center border-r border-border/30 last:border-r-0 ${
-                        d.done ? "bg-green-subtle" : ""
-                      }`}
-                    >
-                      <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${
-                        d.done ? "text-green-light" : "text-muted-foreground"
-                      }`}>
-                        {d.day}
-                      </p>
-                      <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl mx-auto mb-2 flex items-center justify-center ${
-                        d.done ? "gradient-green" : "bg-muted"
-                      }`}>
-                        <d.icon className={`h-4 w-4 ${d.done ? "text-primary-foreground" : "text-muted-foreground"}`} />
-                      </div>
-                      <p className="text-[10px] md:text-xs font-medium hidden md:block">{d.label}</p>
-                      <p className={`text-[9px] font-bold uppercase tracking-wider mt-1 ${
-                        d.type === "Train" ? "text-green-light" :
-                        d.type === "Recover" ? "text-accent" :
-                        d.type === "Mindset" ? "text-accent" :
-                        d.type === "Match" ? "text-primary" :
-                        "text-muted-foreground"
-                      }`}>
-                        {d.type}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Weekly Stats */}
-            <motion.div variants={fadeUp} custom={3} className="mb-8">
-              <h2 className="font-serif text-xl font-semibold mb-5">This Week's Activity</h2>
+              <h2 className="font-serif text-xl font-semibold mb-5">This Week's Progress</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {weeklyStats.map((s) => {
-                  const pct = Math.min(100, (parseInt(s.value) / parseInt(s.target)) * 100);
+                {[
+                  { label: "Sessions Completed", value: completedCount.toString(), target: plan.length.toString(), icon: Activity, color: "text-green-light" },
+                  { label: "Training Minutes", value: totalMinutes.toString(), target: "180", icon: Dumbbell, color: "text-accent" },
+                  { label: "Recovery Compliance", value: plan.filter(s => s.type === "recovery" && s.status === "completed").length.toString(), target: plan.filter(s => s.type === "recovery").length.toString(), icon: Heart, color: "text-green-light" },
+                  { label: "Consistency Streak", value: "12", target: "—", icon: Flame, color: "text-accent" },
+                ].map((s) => {
+                  const pct = s.target !== "—" ? Math.min(100, (parseInt(s.value) / parseInt(s.target)) * 100) : 100;
                   return (
                     <div key={s.label} className="card-premium-static p-5">
                       <div className="flex items-center justify-between mb-3">
-                        <s.icon className={`h-4 w-4 ${s.color}`} />
-                        <span className="text-xs text-muted-foreground">{s.value}/{s.target}</span>
+                        <s.icon className={`h-5 w-5 ${s.color}`} />
+                        {s.target !== "—" && <span className="text-xs text-muted-foreground">{s.value}/{s.target}</span>}
                       </div>
                       <p className="stat-number text-3xl mb-1">{s.value}</p>
-                      <p className="text-xs font-medium text-muted-foreground mb-3">{s.label} sessions</p>
+                      <p className="text-xs font-medium text-muted-foreground mb-3">{s.label}</p>
                       <div className="progress-bar">
                         <div className="progress-bar-fill" style={{ width: `${pct}%` }} />
                       </div>
@@ -203,7 +210,7 @@ export default function TrackerPage() {
             </motion.div>
 
             {/* Consistency Chart */}
-            <motion.div variants={fadeUp} custom={4} className="mb-8">
+            <motion.div variants={fadeUp} custom={3} className="mb-8">
               <h2 className="font-serif text-xl font-semibold mb-5">Consistency Over Time</h2>
               <div className="card-premium-static p-5 md:p-6">
                 <div className="flex items-end gap-3 h-32">
@@ -224,7 +231,7 @@ export default function TrackerPage() {
             </motion.div>
 
             {/* My Season */}
-            <motion.div variants={fadeUp} custom={4.5} className="mb-8">
+            <motion.div variants={fadeUp} custom={3.5} className="mb-8">
               <h2 className="font-serif text-xl font-semibold mb-5">My Season</h2>
               <div className="card-premium-static p-5 md:p-6">
                 <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mb-6">
@@ -254,51 +261,28 @@ export default function TrackerPage() {
               </div>
             </motion.div>
 
-            {/* Habits & Sessions */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <motion.div variants={fadeUp} custom={5}>
-                <h2 className="font-serif text-xl font-semibold mb-5">Habit Streaks</h2>
-                <div className="space-y-2.5">
-                  {habits.map((h) => (
-                    <div key={h.name} className="card-premium-static p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className={`h-5 w-5 ${h.done ? "text-green-light" : "text-border"}`} />
-                        <span className="text-sm font-medium">{h.name}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Flame className="h-4 w-4 text-accent" />
-                        <span className="stat-number text-sm">{h.streak}</span>
-                      </div>
+            {/* Habits */}
+            <motion.div variants={fadeUp} custom={4} className="mb-8">
+              <h2 className="font-serif text-xl font-semibold mb-5">Habit Streaks</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                {habits.map((h) => (
+                  <div key={h.name} className="card-premium-static p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className={`h-5 w-5 ${h.done ? "text-green-light" : "text-border"}`} />
+                      <span className="text-sm font-medium">{h.name}</span>
                     </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              <motion.div variants={fadeUp} custom={6}>
-                <h2 className="font-serif text-xl font-semibold mb-5">Recent Sessions</h2>
-                <div className="space-y-2.5">
-                  {recentSessions.map((s) => (
-                    <div key={s.title} className="card-premium-static p-4">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{s.title}</p>
-                          <div className="flex items-center gap-2 mt-1.5">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${s.typeColor}`}>{s.type}</span>
-                            <span className="text-xs text-muted-foreground">{s.date}</span>
-                            <span className="text-xs text-muted-foreground">•</span>
-                            <span className="text-xs text-muted-foreground">{s.duration}</span>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="flex items-center gap-1.5">
+                      <Flame className="h-4 w-4 text-accent" />
+                      <span className="stat-number text-sm">{h.streak}</span>
                     </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
 
             {/* Streaks insight */}
             {dashboardInsights[1] && (
-              <motion.div variants={fadeUp} custom={6.5} className="mb-8">
+              <motion.div variants={fadeUp} custom={4.5} className="mb-8">
                 <My2ctsCallout
                   title={dashboardInsights[1].title}
                   quote={dashboardInsights[1].quote}
@@ -313,9 +297,9 @@ export default function TrackerPage() {
 
       <section className="section-band-alt">
         <div className="container-content text-center">
-          <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5 text-balance">See your progress. Stay accountable.</h2>
-          <p className="text-editorial mx-auto mb-10">Premium members get complete tracking history, custom goals, weekly insights, and coaching recommendations.</p>
-          <Link to="/membership"><Button variant="gold" size="xl" className="shadow-glow">Unlock Full Dashboard <ArrowRight className="h-4 w-4" /></Button></Link>
+          <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5 text-balance">Your system. Your progress. Your game.</h2>
+          <p className="text-editorial mx-auto mb-10">Premium members get personalized weekly plans, advanced tracking, coaching recommendations, and exclusive programs.</p>
+          <Link to="/membership"><Button variant="gold" size="xl" className="shadow-glow">Unlock Full System <ArrowRight className="h-4 w-4" /></Button></Link>
 
           <RecommendedNext items={[
             { icon: Dumbbell, label: "Coach", title: "Get Today's Plan from Exercise Coach", href: "/exercise-coach" },
