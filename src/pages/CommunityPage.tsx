@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { ArrowRight, Users, Target, MessageCircle, Star, Calendar, Award, Heart, Shield, Dumbbell, Brain, Activity } from "lucide-react";
 import communityImg from "@/assets/community-hero.jpg";
-
+import communityPostgameImg from "@/assets/community-postgame.jpg";
 import { fadeUp } from "@/lib/animations";
 
 const features = [
@@ -33,6 +35,8 @@ const challenges = [
   { title: "Return to Fitness Sprint", participants: 156, desc: "4-week structured return to match fitness." },
   { title: "Mindset Journal Week", participants: 89, desc: "Daily journaling prompts for mental clarity." },
 ];
+
+const communityInsights = getMy2ctsByContext("community");
 
 export default function CommunityPage() {
   return (
@@ -70,7 +74,29 @@ export default function CommunityPage() {
         </div>
       </section>
 
+      {/* My2cts Community Insights with Image */}
       <section className="section-band-alt">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="image-card aspect-[16/10] overflow-hidden rounded-2xl">
+              <img src={communityPostgameImg} alt="Adult players walking off the pitch together" className="w-full h-full object-cover" />
+            </div>
+            <div className="space-y-4">
+              {communityInsights.slice(0, 2).map(insight => (
+                <My2ctsCallout
+                  key={insight.title}
+                  title={insight.title}
+                  quote={insight.quote}
+                  takeaway={insight.takeaway}
+                  slug={insight.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-band">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Active Challenges</h2>
           <div className="grid md:grid-cols-3 gap-5">
@@ -89,7 +115,7 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Member Stories</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -110,7 +136,7 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      <section className="section-band-alt">
+      <section className="section-band">
         <div className="container-content max-w-2xl">
           <h2 className="text-3xl font-bold mb-6">Community Values</h2>
           <div className="space-y-3">
@@ -124,7 +150,7 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Find your people.</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">Join a supportive community of adult players who are building better habits together.</p>

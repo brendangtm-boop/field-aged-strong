@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { ArrowRight, Moon, Droplets, Activity, Heart, Shield, Clock, Zap, Target, Dumbbell, Brain } from "lucide-react";
 import recoveryImg from "@/assets/recovery-hero.jpg";
+import recoveryHomeImg from "@/assets/recovery-home.jpg";
 import { recoveryRoutines } from "@/data/recovery";
 import { RECOVERY_CATEGORIES } from "@/data/types";
-
 import { fadeUp } from "@/lib/animations";
 
 const categoryIcons: Record<string, any> = {
@@ -24,6 +26,8 @@ const categoryDescs: Record<string, string> = {
   "Hydration Strategy": "Pre, during, and post-match hydration protocols.",
   "Muscle Soreness Management": "Active recovery and load management for sore muscles.",
 };
+
+const recoveryInsights = getMy2ctsByContext("recovery");
 
 export default function RecoveryHub() {
   const categories = RECOVERY_CATEGORIES.map(cat => ({
@@ -73,7 +77,29 @@ export default function RecoveryHub() {
         </div>
       </section>
 
+      {/* My2cts Recovery Insights */}
       <section className="section-band-alt">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="image-card aspect-[16/10] overflow-hidden rounded-2xl">
+              <img src={recoveryHomeImg} alt="At-home recovery session with foam roller" className="w-full h-full object-cover" />
+            </div>
+            <div className="space-y-4">
+              {recoveryInsights.slice(0, 2).map(insight => (
+                <My2ctsCallout
+                  key={insight.title}
+                  title={insight.title}
+                  quote={insight.quote}
+                  takeaway={insight.takeaway}
+                  slug={insight.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-band">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Recovery Routines</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -94,7 +120,7 @@ export default function RecoveryHub() {
         </div>
       </section>
 
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Recovery is your competitive advantage.</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">The players who last longest are the ones who recover best. Start building your recovery system today.</p>

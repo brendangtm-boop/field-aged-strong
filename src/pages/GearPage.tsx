@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { ArrowRight, Star, Shield, Shirt, Footprints, Wrench, Sun } from "lucide-react";
-
+import gearImg from "@/assets/gear-boots.jpg";
 import { fadeUp } from "@/lib/animations";
 
 const gearCategories = [
@@ -20,14 +22,20 @@ const buyingGuides = [
   { title: "Shin Guard Buying Guide 2025", desc: "Protection, fit, and comfort for adult league players.", badge: "Updated" },
 ];
 
+const gearInsights = getMy2ctsByContext("gear");
+
 export default function GearPage() {
   return (
     <>
-      <section className="section-band bg-primary text-primary-foreground">
-        <div className="container-content max-w-2xl text-center">
+      <section className="relative py-24 md:py-32">
+        <div className="absolute inset-0">
+          <img src={gearImg} alt="Soccer boots and gear close-up" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 hero-gradient" />
+        </div>
+        <div className="relative container-content max-w-2xl text-center">
           <motion.div initial="hidden" animate="visible">
             <motion.p variants={fadeUp} custom={0} className="badge-gold mb-4">Gear Guide</motion.p>
-            <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-bold mb-4">
+            <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-bold text-primary-foreground mb-4">
               The right gear for your game.
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-lg text-primary-foreground/80">
@@ -65,7 +73,23 @@ export default function GearPage() {
         </div>
       </section>
 
+      {/* My2cts Gear Insights */}
       <section className="section-band-alt">
+        <div className="container-content">
+          <div className="space-y-4 max-w-3xl mx-auto">
+            {gearInsights.slice(0, 3).map(insight => (
+              <My2ctsCallout
+                key={insight.title}
+                title={insight.title}
+                quote={insight.quote}
+                takeaway={insight.takeaway}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-band">
         <div className="container-content">
           <h2 className="text-3xl font-bold mb-8">Buying Guides</h2>
           <div className="grid md:grid-cols-2 gap-6">
@@ -80,7 +104,7 @@ export default function GearPage() {
         </div>
       </section>
 
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Gear that supports your game.</h2>
           <p className="text-editorial max-w-xl mx-auto mb-8">No affiliate clutter. Just honest recommendations from players who understand what adult athletes need.</p>

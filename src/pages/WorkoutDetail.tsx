@@ -1,9 +1,13 @@
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Zap, RotateCcw, CheckCircle } from "lucide-react";
+import { ArrowLeft, Clock, Zap, RotateCcw } from "lucide-react";
 import { workouts } from "@/data/workouts";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { Heart, Brain, Activity } from "lucide-react";
+
+const trainingInsights = getMy2ctsByContext("training");
 
 export default function WorkoutDetail() {
   const { slug } = useParams();
@@ -21,6 +25,9 @@ export default function WorkoutDetail() {
   }
 
   const related = workouts.filter(w => w.category === workout.category && w.slug !== workout.slug).slice(0, 3);
+  // Pick a contextual insight based on workout index for variety
+  const insightIndex = workouts.indexOf(workout) % trainingInsights.length;
+  const insight = trainingInsights[insightIndex];
 
   return (
     <>
@@ -54,6 +61,18 @@ export default function WorkoutDetail() {
               </li>
             ))}
           </ol>
+
+          {/* My2cts Insight */}
+          {insight && (
+            <div className="mb-12">
+              <My2ctsCallout
+                title={insight.title}
+                quote={insight.quote}
+                takeaway={insight.takeaway}
+                slug={insight.slug}
+              />
+            </div>
+          )}
 
           {related.length > 0 && (
             <div>

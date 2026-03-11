@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import {
   ArrowRight, Brain, Zap, Star, Target, AlertCircle,
   BookOpen, CheckCircle, Heart, TrendingUp, MessageCircle
 } from "lucide-react";
 import { fadeUp } from "@/lib/animations";
+import mindsetReflectionImg from "@/assets/mindset-reflection.jpg";
 
 const ratingLabels: Record<string, string[]> = {
   energy: ["Exhausted", "Low", "Moderate", "Good", "Peak"],
@@ -38,6 +41,8 @@ const coachFeedback = [
   },
 ];
 
+const matchInsights = getMy2ctsByContext("match");
+
 export default function MatchReflectionPage() {
   const [energy, setEnergy] = useState(3);
   const [performance, setPerformance] = useState(3);
@@ -47,13 +52,17 @@ export default function MatchReflectionPage() {
   return (
     <>
       {/* Hero */}
-      <section className="section-band bg-primary text-primary-foreground pt-28 md:pt-36">
-        <div className="container-content text-center">
+      <section className="relative py-24 md:py-32">
+        <div className="absolute inset-0">
+          <img src={mindsetReflectionImg} alt="Player reflecting after a match" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 hero-gradient" />
+        </div>
+        <div className="relative container-content text-center">
           <motion.div initial="hidden" animate="visible">
             <motion.p variants={fadeUp} custom={0} className="badge-gold mb-5">
               Post-Match Tool
             </motion.p>
-            <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold mb-5 text-balance">
+            <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-primary-foreground mb-5 text-balance">
               Match Reflection
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-base md:text-lg text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
@@ -102,6 +111,17 @@ export default function MatchReflectionPage() {
                     </div>
                   ))}
                 </motion.div>
+
+                {/* My2cts Match Insight */}
+                {matchInsights[0] && (
+                  <motion.div variants={fadeUp} custom={0.5} className="mb-10">
+                    <My2ctsCallout
+                      title={matchInsights[0].title}
+                      quote={matchInsights[0].quote}
+                      takeaway={matchInsights[0].takeaway}
+                    />
+                  </motion.div>
+                )}
 
                 {/* Reflection Prompts */}
                 <motion.div variants={fadeUp} custom={1} className="mb-10">
@@ -176,6 +196,17 @@ export default function MatchReflectionPage() {
                     </div>
                   ))}
                 </div>
+
+                {/* My2cts Post-Match Insight */}
+                {matchInsights[1] && (
+                  <div className="mb-10">
+                    <My2ctsCallout
+                      title={matchInsights[1].title}
+                      quote={matchInsights[1].quote}
+                      takeaway={matchInsights[1].takeaway}
+                    />
+                  </div>
+                )}
 
                 <div className="text-center">
                   <Button variant="default" size="lg" onClick={() => setSubmitted(false)}>

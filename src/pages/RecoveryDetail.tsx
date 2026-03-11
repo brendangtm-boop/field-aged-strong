@@ -1,9 +1,13 @@
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, MapPin, CheckCircle } from "lucide-react";
+import { ArrowLeft, Clock, MapPin } from "lucide-react";
 import { recoveryRoutines } from "@/data/recovery";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { Dumbbell, Brain, Activity } from "lucide-react";
+
+const recoveryInsights = getMy2ctsByContext("recovery");
 
 export default function RecoveryDetail() {
   const { slug } = useParams();
@@ -21,6 +25,8 @@ export default function RecoveryDetail() {
   }
 
   const related = recoveryRoutines.filter(r => r.category === routine.category && r.slug !== routine.slug).slice(0, 3);
+  const insightIndex = recoveryRoutines.indexOf(routine) % recoveryInsights.length;
+  const insight = recoveryInsights[insightIndex];
 
   return (
     <>
@@ -53,6 +59,18 @@ export default function RecoveryDetail() {
               </li>
             ))}
           </ol>
+
+          {/* My2cts Insight */}
+          {insight && (
+            <div className="mb-12">
+              <My2ctsCallout
+                title={insight.title}
+                quote={insight.quote}
+                takeaway={insight.takeaway}
+                slug={insight.slug}
+              />
+            </div>
+          )}
 
           {related.length > 0 && (
             <div>

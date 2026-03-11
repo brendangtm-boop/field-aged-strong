@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import {
   Target, Heart, Brain, Shield, RotateCcw, Flame,
   Users, Sparkles, ArrowRight, Star, CheckCircle,
@@ -15,6 +17,9 @@ import mobilityImg from "@/assets/mobility-stretch.jpg";
 import gearImg from "@/assets/gear-boots.jpg";
 import foamImg from "@/assets/recovery-foam-roller.jpg";
 import partnersImg from "@/assets/training-partners.jpg";
+import trainingDrillsImg from "@/assets/training-drills.jpg";
+import recoveryHomeImg from "@/assets/recovery-home.jpg";
+import communityPostgameImg from "@/assets/community-postgame.jpg";
 import { fadeUp } from "@/lib/animations";
 import { my2ctsEntries } from "@/data/my2cts";
 
@@ -62,6 +67,9 @@ const stats = [
   { value: "4.9", label: "Average rating" },
 ];
 
+const trainingInsight = getMy2ctsByContext("training")[0];
+const recoveryInsight = getMy2ctsByContext("recovery")[0];
+
 export default function HomePage() {
   return (
     <>
@@ -92,7 +100,7 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </div>
-      <div className="absolute bottom-0 left-0 right-0 bg-primary/40 backdrop-blur-md border-t border-primary-foreground/10">
+        <div className="absolute bottom-0 left-0 right-0 bg-primary/40 backdrop-blur-md border-t border-primary-foreground/10">
           <div className="container-content py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               {[
@@ -161,8 +169,47 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Featured Platform Tools ── */}
+      {/* ── From the Field — My2cts Insights ── */}
       <section className="section-band-warm">
+        <div className="container-content">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center">
+                  <MessageSquareText className="h-5 w-5 text-accent" />
+                </div>
+                <span className="badge-gold">From the Field</span>
+              </div>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold mb-5">Real player insights that shape how we train.</h2>
+              <p className="text-editorial mb-8">My 2cts is our editorial voice — short, honest reflections from adult players about training, recovery, injuries, mindset, and the reality of playing past 40.</p>
+              <Link to="/my2cts">
+                <Button variant="default" size="lg">Read All Insights <ArrowRight className="h-4 w-4" /></Button>
+              </Link>
+            </motion.div>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="space-y-4">
+              {trainingInsight && (
+                <My2ctsCallout
+                  title={trainingInsight.title}
+                  quote={trainingInsight.quote}
+                  takeaway={trainingInsight.takeaway}
+                  slug={trainingInsight.slug}
+                />
+              )}
+              {recoveryInsight && (
+                <My2ctsCallout
+                  title={recoveryInsight.title}
+                  quote={recoveryInsight.quote}
+                  takeaway={recoveryInsight.takeaway}
+                  slug={recoveryInsight.slug}
+                />
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Featured Platform Tools ── */}
+      <section className="section-band">
         <div className="container-content">
           <div className="text-center mb-14">
             <p className="badge-green mb-4">Platform Tools</p>
@@ -189,7 +236,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Exercise Coach Teaser ── */}
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
@@ -238,7 +285,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Mindset Coach Teaser ── */}
-      <section className="section-band-alt">
+      <section className="section-band">
         <div className="container-content">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="order-2 lg:order-1">
@@ -287,7 +334,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Featured Guides ── */}
-      <section className="section-band">
+      <section className="section-band-alt">
         <div className="container-content">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12 md:mb-14">
             <div>
@@ -324,7 +371,7 @@ export default function HomePage() {
       </section>
 
       {/* ── My 2cts Teaser ── */}
-      <section className="section-band-alt">
+      <section className="section-band">
         <div className="container-content">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
             <div>
@@ -367,10 +414,10 @@ export default function HomePage() {
         </div>
       </section>
 
-
+      {/* ── Recovery Visual CTA ── */}
       <section className="relative py-28 md:py-36">
         <div className="absolute inset-0">
-          <img src={recoveryImg} alt="Adults stretching on soccer field" className="w-full h-full object-cover" />
+          <img src={recoveryHomeImg} alt="At-home recovery session" className="w-full h-full object-cover" />
           <div className="absolute inset-0 hero-gradient" />
         </div>
         <div className="relative container-content text-center">
@@ -391,7 +438,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
               <div className="grid grid-cols-2 gap-3">
-                <div className="image-card"><img src={communityImg} alt="Adult soccer team celebrating" /></div>
+                <div className="image-card"><img src={communityPostgameImg} alt="Adult soccer team post-game" /></div>
                 <div className="image-card"><img src={gearImg} alt="Player lacing up boots" /></div>
               </div>
             </motion.div>

@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, User, BookOpen } from "lucide-react";
 import { articles } from "@/data/articles";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import { Dumbbell, Heart, Activity } from "lucide-react";
+
+const articleInsights = getMy2ctsByContext("articles");
 
 export default function ArticleDetail() {
   const { slug } = useParams();
@@ -21,6 +25,7 @@ export default function ArticleDetail() {
   }
 
   const related = articles.filter(a => a.category === article.category && a.slug !== article.slug).slice(0, 3);
+  const insight = articleInsights[0];
 
   return (
     <>
@@ -43,7 +48,25 @@ export default function ArticleDetail() {
           <p className="text-lg text-muted-foreground leading-relaxed mb-10 border-l-2 border-accent pl-4">{article.summary}</p>
 
           <div className="prose prose-sm max-w-none space-y-6 mb-12">
-            {article.content.map((paragraph, i) => (
+            {article.content.slice(0, Math.ceil(article.content.length / 2)).map((paragraph, i) => (
+              <p key={i} className="leading-relaxed text-foreground/90">{paragraph}</p>
+            ))}
+          </div>
+
+          {/* My2cts Insight mid-article */}
+          {insight && (
+            <div className="mb-12">
+              <My2ctsCallout
+                title={insight.title}
+                quote={insight.quote}
+                takeaway={insight.takeaway}
+                slug={insight.slug}
+              />
+            </div>
+          )}
+
+          <div className="prose prose-sm max-w-none space-y-6 mb-12">
+            {article.content.slice(Math.ceil(article.content.length / 2)).map((paragraph, i) => (
               <p key={i} className="leading-relaxed text-foreground/90">{paragraph}</p>
             ))}
           </div>

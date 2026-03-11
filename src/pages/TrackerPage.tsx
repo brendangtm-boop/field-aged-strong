@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { RecommendedNext } from "@/components/RecommendedNext";
+import { My2ctsCallout } from "@/components/My2ctsCallout";
+import { getMy2ctsByContext } from "@/data/my2cts-contextual";
 import {
   ArrowRight, Activity, Moon, Zap, Brain, TrendingUp,
   Flame, CheckCircle, Heart, Target, Dumbbell,
@@ -10,7 +12,6 @@ import {
 import { fadeUp } from "@/lib/animations";
 import trackerImg from "@/assets/tracker-flatlay.jpg";
 
-/* ── Data ── */
 const todaySummary = {
   energy: 7,
   soreness: 4,
@@ -59,6 +60,8 @@ const weekConsistency = [
   { week: "W11", sessions: 5, max: 7 },
   { week: "W12", sessions: 6, max: 7 },
 ];
+
+const dashboardInsights = getMy2ctsByContext("dashboard");
 
 export default function TrackerPage() {
   return (
@@ -125,6 +128,18 @@ export default function TrackerPage() {
                 </div>
               </div>
             </motion.div>
+
+            {/* My2cts Dashboard Insight */}
+            {dashboardInsights[0] && (
+              <motion.div variants={fadeUp} custom={1.5} className="mb-8">
+                <My2ctsCallout
+                  title={dashboardInsights[0].title}
+                  quote={dashboardInsights[0].quote}
+                  takeaway={dashboardInsights[0].takeaway}
+                  slug={dashboardInsights[0].slug}
+                />
+              </motion.div>
+            )}
 
             {/* Weekly Player Loop */}
             <motion.div variants={fadeUp} custom={2} className="mb-8">
@@ -280,6 +295,18 @@ export default function TrackerPage() {
                 </div>
               </motion.div>
             </div>
+
+            {/* Streaks insight */}
+            {dashboardInsights[1] && (
+              <motion.div variants={fadeUp} custom={6.5} className="mb-8">
+                <My2ctsCallout
+                  title={dashboardInsights[1].title}
+                  quote={dashboardInsights[1].quote}
+                  takeaway={dashboardInsights[1].takeaway}
+                  slug={dashboardInsights[1].slug}
+                />
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </section>
