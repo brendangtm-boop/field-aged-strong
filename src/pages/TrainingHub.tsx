@@ -87,21 +87,21 @@ export default function TrainingHub() {
       {/* Filters */}
       <section className="section-band">
         <div className="container-content">
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-8">Find your training</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+          <div className="mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold mb-10">Find your training</h2>
+            <div className="grid md:grid-cols-3 gap-8">
               {filterGroups.map(f => (
-                <div key={f.label} className="card-premium p-5">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">{f.label}</h3>
-                  <div className="flex flex-wrap gap-2">
+                <div key={f.label} className="card-premium p-6 md:p-7">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-foreground mb-4">{f.label}</h3>
+                  <div className="flex flex-wrap gap-2.5">
                     {f.options.map(o => (
                       <button
                         key={o}
                         onClick={() => toggleFilter(f.label, o)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                        className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 border ${
                           activeFilters[f.label] === o
-                            ? "bg-accent text-accent-foreground shadow-sm"
-                            : "bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+                            ? "bg-accent text-accent-foreground border-accent shadow-sm scale-[1.03]"
+                            : "bg-muted/60 text-foreground/70 border-border/40 hover:bg-primary hover:text-primary-foreground hover:border-primary"
                         }`}
                       >
                         {o}
@@ -118,15 +118,17 @@ export default function TrainingHub() {
       {/* Categories */}
       <section className="section-band-alt">
         <div className="container-content">
-          <h2 className="text-3xl font-bold mb-8">Training Categories</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <h2 className="text-3xl md:text-4xl font-bold mb-10">Training Categories</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((c, i) => (
               <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-                <Link to={`/category/training/${encodeURIComponent(c.title)}`} className="card-premium p-5 group cursor-pointer block">
-                  <c.icon className="h-6 w-6 text-green-light mb-3" />
-                  <h3 className="font-serif text-lg font-semibold mb-1 group-hover:text-green-light transition-colors">{c.title}</h3>
-                  <p className="text-xs text-muted-foreground mb-2">{c.desc}</p>
-                  <span className="text-xs font-medium text-green-light">{c.count} workouts</span>
+                <Link to={`/category/training/${encodeURIComponent(c.title)}`} className="card-premium p-6 group cursor-pointer block">
+                  <div className="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
+                    <c.icon className="h-6 w-6 text-green-light" />
+                  </div>
+                  <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-accent transition-colors">{c.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{c.desc}</p>
+                  <span className="text-sm font-bold text-accent">{c.count} workouts</span>
                 </Link>
               </motion.div>
             ))}

@@ -6,7 +6,7 @@ import {
   Target, Heart, Brain, Shield, RotateCcw, Flame,
   Users, Sparkles, ArrowRight, Star, CheckCircle,
   MessageCircle, Dumbbell, BookOpen, TrendingUp, Play,
-  Activity, Compass, ClipboardCheck
+  Activity, Compass, ClipboardCheck, MessageSquareText, Calendar
 } from "lucide-react";
 import heroImg from "@/assets/hero-soccer.jpg";
 import recoveryImg from "@/assets/recovery-hero.jpg";
@@ -16,6 +16,7 @@ import gearImg from "@/assets/gear-boots.jpg";
 import foamImg from "@/assets/recovery-foam-roller.jpg";
 import partnersImg from "@/assets/training-partners.jpg";
 import { fadeUp } from "@/lib/animations";
+import { my2ctsEntries } from "@/data/my2cts";
 
 /* ── Data ── */
 const longevityPillars = [
@@ -322,7 +323,51 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Recovery Banner ── */}
+      {/* ── My 2cts Teaser ── */}
+      <section className="section-band-alt">
+        <div className="container-content">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <MessageSquareText className="h-5 w-5 text-accent" />
+                </div>
+                <span className="badge-gold">My 2cts</span>
+              </div>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold">Honest reflections on playing past 40.</h2>
+            </div>
+            <Link to="/my2cts" className="hidden md:flex items-center gap-2 text-sm font-semibold text-accent hover:text-primary transition-colors">
+              Read all entries <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {my2ctsEntries.slice(0, 3).map((entry, i) => (
+              <motion.div key={entry.slug} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+                <Link to={`/my2cts/${entry.slug}`} className="card-premium p-6 block h-full group">
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {entry.tags.slice(0, 2).map(t => (
+                      <span key={t} className="badge-green text-[10px]">{t}</span>
+                    ))}
+                  </div>
+                  <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-accent transition-colors">{entry.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">{entry.teaser}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Calendar className="h-3.5 w-3.5" />
+                    <span>{new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+          <div className="mt-8 text-center md:hidden">
+            <Link to="/my2cts" className="inline-flex items-center gap-2 text-sm font-semibold text-accent">
+              Read all entries <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+
       <section className="relative py-28 md:py-36">
         <div className="absolute inset-0">
           <img src={recoveryImg} alt="Adults stretching on soccer field" className="w-full h-full object-cover" />

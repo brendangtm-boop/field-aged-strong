@@ -7,22 +7,22 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 215 28% 17%;
+    --foreground: 220 20% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 28% 17%;
+    --card-foreground: 220 20% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 28% 17%;
+    --popover-foreground: 220 20% 14%;
 
     --primary: 209 85% 30%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 213 27% 95%;
-    --secondary-foreground: 215 28% 17%;
+    --secondary: 216 20% 95%;
+    --secondary-foreground: 220 20% 14%;
 
-    --muted: 213 20% 93%;
-    --muted-foreground: 215 15% 47%;
+    --muted: 216 16% 91%;
+    --muted-foreground: 220 12% 40%;
 
     --accent: 25 100% 50%;
     --accent-foreground: 0 0% 100%;
@@ -30,40 +30,40 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 213 20% 90%;
-    --input: 213 20% 90%;
+    --border: 216 18% 87%;
+    --input: 216 18% 87%;
     --ring: 209 85% 30%;
 
     --radius: 0.75rem;
 
     /* Extended tokens */
-    --surface: 216 33% 97%;
-    --surface-warm: 213 20% 95%;
+    --surface: 218 25% 96%;
+    --surface-warm: 216 18% 94%;
     --surface-elevated: 0 0% 100%;
-    --hero-overlay: 209 85% 12%;
+    --hero-overlay: 209 85% 10%;
     --gold: 25 100% 50%;
-    --gold-light: 25 80% 60%;
+    --gold-light: 25 80% 58%;
     --gold-dark: 25 100% 40%;
-    --green-light: 209 70% 45%;
-    --green-muted: 209 30% 92%;
-    --green-subtle: 209 40% 96%;
+    --green-light: 209 70% 42%;
+    --green-muted: 209 30% 90%;
+    --green-subtle: 209 40% 95%;
 
     --font-serif: 'Playfair Display', Georgia, serif;
     --font-sans: 'DM Sans', system-ui, sans-serif;
 
-    --shadow-xs: 0 1px 2px 0 hsl(215 28% 17% / 0.03);
-    --shadow-card: 0 1px 3px 0 hsl(215 28% 17% / 0.04), 0 6px 20px -4px hsl(215 28% 17% / 0.06);
-    --shadow-elevated: 0 4px 16px -4px hsl(215 28% 17% / 0.08), 0 12px 40px -8px hsl(215 28% 17% / 0.1);
-    --shadow-hero: 0 8px 48px -12px hsl(215 28% 17% / 0.18);
-    --shadow-glow: 0 0 0 1px hsl(25 100% 50% / 0.15), 0 4px 24px -4px hsl(25 100% 50% / 0.12);
+    --shadow-xs: 0 1px 2px 0 hsl(220 20% 14% / 0.04);
+    --shadow-card: 0 1px 3px 0 hsl(220 20% 14% / 0.06), 0 6px 20px -4px hsl(220 20% 14% / 0.08);
+    --shadow-elevated: 0 4px 16px -4px hsl(220 20% 14% / 0.1), 0 12px 40px -8px hsl(220 20% 14% / 0.12);
+    --shadow-hero: 0 8px 48px -12px hsl(220 20% 14% / 0.2);
+    --shadow-glow: 0 0 0 1px hsl(25 100% 50% / 0.2), 0 4px 24px -4px hsl(25 100% 50% / 0.15);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 209 85% 30%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 213 27% 95%;
-    --sidebar-accent-foreground: 215 28% 17%;
-    --sidebar-border: 213 20% 91%;
+    --sidebar-accent: 216 20% 95%;
+    --sidebar-accent-foreground: 220 20% 14%;
+    --sidebar-border: 216 18% 91%;
     --sidebar-ring: 209 85% 40%;
   }
 }
@@ -82,18 +82,24 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.65;
+    font-size: 16px;
+    line-height: 1.7;
+    color: hsl(var(--foreground));
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     line-height: 1.15;
     letter-spacing: -0.01em;
+    color: hsl(var(--foreground));
   }
 
   h1 { letter-spacing: -0.025em; }
   h2 { letter-spacing: -0.02em; }
+
+  p {
+    color: hsl(var(--foreground) / 0.85);
+  }
 
   ::selection {
     background: hsl(25 100% 50% / 0.2);
@@ -113,7 +119,7 @@
 
   .section-band-warm {
     @apply py-24 md:py-32;
-    background-color: hsl(var(--surface-warm));
+    background: linear-gradient(180deg, hsl(var(--surface-warm)), hsl(var(--surface)));
   }
 
   .container-content {
@@ -125,16 +131,18 @@
   }
 
   .text-editorial {
-    @apply text-lg leading-relaxed text-muted-foreground;
+    @apply text-lg leading-relaxed;
+    color: hsl(var(--muted-foreground));
     max-width: 38em;
   }
 
   .text-editorial-wide {
-    @apply text-lg leading-relaxed text-muted-foreground;
+    @apply text-lg leading-relaxed;
+    color: hsl(var(--muted-foreground));
   }
 
   .card-premium {
-    @apply bg-card rounded-2xl border border-border/40 overflow-hidden;
+    @apply bg-card rounded-2xl border border-border/50 overflow-hidden;
     box-shadow: var(--shadow-card);
     transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
   }
@@ -142,11 +150,11 @@
   .card-premium:hover {
     box-shadow: var(--shadow-elevated);
     border-color: hsl(var(--border));
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 
   .card-premium-static {
-    @apply bg-card rounded-2xl border border-border/40 overflow-hidden;
+    @apply bg-card rounded-2xl border border-border/50 overflow-hidden;
     box-shadow: var(--shadow-card);
   }
 
@@ -159,22 +167,22 @@
 
   .badge-gold {
     @apply inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold tracking-widest uppercase;
-    background: hsl(var(--gold) / 0.1);
+    background: hsl(var(--gold) / 0.12);
     color: hsl(var(--gold-dark));
     letter-spacing: 0.08em;
   }
 
   .badge-green {
     @apply inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold tracking-widest uppercase;
-    background: hsl(var(--primary) / 0.08);
+    background: hsl(var(--primary) / 0.1);
     color: hsl(var(--green-light));
     letter-spacing: 0.08em;
   }
 
   .badge-white {
     @apply inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold tracking-widest uppercase;
-    background: hsl(0 0% 100% / 0.15);
-    color: hsl(0 0% 100% / 0.9);
+    background: hsl(0 0% 100% / 0.18);
+    color: hsl(0 0% 100% / 0.95);
     letter-spacing: 0.08em;
     backdrop-filter: blur(8px);
   }
@@ -182,9 +190,9 @@
   .hero-gradient {
     background: linear-gradient(
       180deg,
-      hsl(var(--hero-overlay) / 0.55) 0%,
-      hsl(var(--primary) / 0.45) 50%,
-      hsl(var(--hero-overlay) / 0.7) 100%
+      hsl(var(--hero-overlay) / 0.6) 0%,
+      hsl(var(--primary) / 0.5) 50%,
+      hsl(var(--hero-overlay) / 0.75) 100%
     );
   }
 
@@ -209,18 +217,19 @@
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1;
+    color: hsl(var(--foreground));
   }
 
   /* Progress bar */
   .progress-bar {
     @apply rounded-full overflow-hidden;
     background: hsl(var(--muted));
-    height: 6px;
+    height: 7px;
   }
 
   .progress-bar-fill {
     @apply rounded-full h-full transition-all duration-700;
-    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--green-light)));
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
   }
 
   /* Chat bubble styling */
@@ -236,16 +245,16 @@
   }
 
   .chat-prompt-pill {
-    @apply px-3.5 py-2 rounded-full text-xs font-medium cursor-pointer transition-all duration-200;
+    @apply px-4 py-2.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200;
     background: hsl(var(--surface));
     color: hsl(var(--muted-foreground));
-    border: 1px solid hsl(var(--border) / 0.5);
+    border: 1px solid hsl(var(--border) / 0.6);
   }
 
   .chat-prompt-pill:hover {
-    background: hsl(var(--primary) / 0.06);
+    background: hsl(var(--primary) / 0.08);
     color: hsl(var(--green-light));
-    border-color: hsl(var(--primary) / 0.2);
+    border-color: hsl(var(--primary) / 0.25);
   }
 
   /* Image with overlay text */
@@ -266,8 +275,8 @@
     @apply absolute inset-0 flex flex-col justify-end p-5 md:p-6;
     background: linear-gradient(
       to top,
-      hsl(var(--hero-overlay) / 0.8) 0%,
-      hsl(var(--hero-overlay) / 0.2) 60%,
+      hsl(var(--hero-overlay) / 0.85) 0%,
+      hsl(var(--hero-overlay) / 0.25) 60%,
       transparent 100%
     );
   }
