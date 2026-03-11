@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Zap, RotateCcw } from "lucide-react";
+import { ArrowLeft, Clock, Zap, RotateCcw, CheckCircle, X, Edit3 } from "lucide-react";
 import { workouts } from "@/data/workouts";
 import { RecommendedNext } from "@/components/RecommendedNext";
 import { My2ctsCallout } from "@/components/My2ctsCallout";
@@ -9,9 +10,12 @@ import { Heart, Brain, Activity } from "lucide-react";
 
 const trainingInsights = getMy2ctsByContext("training");
 
+type LogStatus = "none" | "completed" | "modified" | "skipped";
+
 export default function WorkoutDetail() {
   const { slug } = useParams();
   const workout = workouts.find(w => w.slug === slug);
+  const [logStatus, setLogStatus] = useState<LogStatus>("none");
 
   if (!workout) {
     return (
@@ -25,7 +29,6 @@ export default function WorkoutDetail() {
   }
 
   const related = workouts.filter(w => w.category === workout.category && w.slug !== workout.slug).slice(0, 3);
-  // Pick a contextual insight based on workout index for variety
   const insightIndex = workouts.indexOf(workout) % trainingInsights.length;
   const insight = trainingInsights[insightIndex];
 
@@ -53,7 +56,7 @@ export default function WorkoutDetail() {
           </div>
 
           <h2 className="font-serif text-xl font-semibold mb-4">Step-by-step instructions</h2>
-          <ol className="space-y-3 mb-12">
+          <ol className="space-y-3 mb-10">
             {workout.steps.map((step, i) => (
               <li key={i} className="flex items-start gap-3">
                 <span className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-green-light flex-shrink-0 mt-0.5">{i + 1}</span>
@@ -61,6 +64,44 @@ export default function WorkoutDetail() {
               </li>
             ))}
           </ol>
+
+          {/* Session Logging */}
+          <div className="card-premium-static p-5 md:p-6 mb-10">
+            <h3 className="font-serif text-lg font-semibold mb-3">Log this session</h3>
+            {logStatus === "none" ? (
+              <div className="flex flex-wrap gap-3">
+                <Button variant="default" size="lg" onClick={() => setLogStatus("completed")}>
+                  <CheckCircle className="h-4 w-4" /> Completed
+                </Button>
+                <Button variant="outline" size="lg" onClick={() => setLogStatus("modified")}>
+                  <Edit3 className="h-4 w-4" /> Modified
+                </Button>
+                <Button variant="ghost" size="lg" onClick={() => setLogStatus("skipped")}>
+                  <X className="h-4 w-4" /> Skipped
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                  logStatus === "completed" ? "gradient-green" :
+                  logStatus === "modified" ? "bg-accent/15" : "bg-muted"
+                }`}>
+                  {logStatus === "completed" ? <CheckCircle className="h-5 w-5 text-primary-foreground" /> :
+                   logStatus === "modified" ? <Edit3 className="h-5 w-5 text-accent" /> :
+                   <X className="h-5 w-5 text-muted-foreground" />}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold capitalize">{logStatus}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {logStatus === "completed" ? "Great work! This session has been logged." :
+                     logStatus === "modified" ? "Logged as modified. Every rep counts." :
+                     "No worries — rest is part of the plan too."}
+                  </p>
+                </div>
+                <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setLogStatus("none")}>Change</Button>
+              </div>
+            )}
+          </div>
 
           {/* My2cts Insight */}
           {insight && (
