@@ -6,30 +6,24 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   {
-    label: "Train",
+    label: "Plan",
     children: [
-      { label: "Training Hub", href: "/training", desc: "Programs & workouts" },
+      { label: "Weekly Plan", href: "/tracker", desc: "What to do this week" },
       { label: "Exercise Coach", href: "/exercise-coach", desc: "AI-powered sessions" },
-    ],
-  },
-  {
-    label: "Recover",
-    children: [
-      { label: "Recovery Hub", href: "/recovery", desc: "Mobility & protocols" },
-      { label: "Gear Guide", href: "/gear", desc: "Equipment & tools" },
-    ],
-  },
-  {
-    label: "Mindset",
-    children: [
-      { label: "Mindset Hub", href: "/mindset", desc: "Confidence & resilience" },
       { label: "Mindset Coach", href: "/mindset-coach", desc: "Personal guidance" },
-      { label: "Match Reflection", href: "/match-reflection", desc: "Post-match processing" },
+      { label: "Start Here", href: "/start-here", desc: "New player onboarding" },
     ],
   },
-  { label: "My 2cts", href: "/my2cts" },
-  { label: "Community", href: "/community" },
-  { label: "Dashboard", href: "/tracker" },
+  { label: "Train", href: "/training" },
+  { label: "Recover", href: "/recovery" },
+  {
+    label: "Play",
+    children: [
+      { label: "Match Reflection", href: "/match-reflection", desc: "Post-match processing" },
+      { label: "Mindset Hub", href: "/mindset", desc: "Confidence & focus" },
+    ],
+  },
+  { label: "Progress", href: "/tracker" },
 ];
 
 export function SiteHeader() {
