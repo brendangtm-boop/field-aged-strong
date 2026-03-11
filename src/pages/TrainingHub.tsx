@@ -118,15 +118,17 @@ export default function TrainingHub() {
       {/* Categories */}
       <section className="section-band-alt">
         <div className="container-content">
-          <h2 className="text-3xl font-bold mb-8">Training Categories</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <h2 className="text-3xl md:text-4xl font-bold mb-10">Training Categories</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((c, i) => (
               <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-                <Link to={`/category/training/${encodeURIComponent(c.title)}`} className="card-premium p-5 group cursor-pointer block">
-                  <c.icon className="h-6 w-6 text-green-light mb-3" />
-                  <h3 className="font-serif text-lg font-semibold mb-1 group-hover:text-green-light transition-colors">{c.title}</h3>
-                  <p className="text-xs text-muted-foreground mb-2">{c.desc}</p>
-                  <span className="text-xs font-medium text-green-light">{c.count} workouts</span>
+                <Link to={`/category/training/${encodeURIComponent(c.title)}`} className="card-premium p-6 group cursor-pointer block">
+                  <div className="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
+                    <c.icon className="h-6 w-6 text-green-light" />
+                  </div>
+                  <h3 className="font-serif text-xl font-semibold mb-2 group-hover:text-accent transition-colors">{c.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{c.desc}</p>
+                  <span className="text-sm font-bold text-accent">{c.count} workouts</span>
                 </Link>
               </motion.div>
             ))}

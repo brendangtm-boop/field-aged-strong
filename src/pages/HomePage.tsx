@@ -6,7 +6,7 @@ import {
   Target, Heart, Brain, Shield, RotateCcw, Flame,
   Users, Sparkles, ArrowRight, Star, CheckCircle,
   MessageCircle, Dumbbell, BookOpen, TrendingUp, Play,
-  Activity, Compass, ClipboardCheck
+  Activity, Compass, ClipboardCheck, MessageSquareText, Calendar
 } from "lucide-react";
 import heroImg from "@/assets/hero-soccer.jpg";
 import recoveryImg from "@/assets/recovery-hero.jpg";
@@ -16,6 +16,7 @@ import gearImg from "@/assets/gear-boots.jpg";
 import foamImg from "@/assets/recovery-foam-roller.jpg";
 import partnersImg from "@/assets/training-partners.jpg";
 import { fadeUp } from "@/lib/animations";
+import { my2ctsEntries } from "@/data/my2cts";
 
 /* ── Data ── */
 const longevityPillars = [
