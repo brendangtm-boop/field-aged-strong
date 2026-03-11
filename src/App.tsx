@@ -23,6 +23,8 @@ import WorkoutDetail from "./pages/WorkoutDetail";
 import RecoveryDetail from "./pages/RecoveryDetail";
 import ArticleDetail from "./pages/ArticleDetail";
 import CategoryPage from "./pages/CategoryPage";
+import My2ctsPage from "./pages/My2ctsPage";
+import My2ctsDetail from "./pages/My2ctsDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +47,8 @@ const App = () => (
             <Route path="/mindset" element={<MindsetHub />} />
             <Route path="/library" element={<LibraryPage />} />
             <Route path="/library/:slug" element={<ArticleDetail />} />
+            <Route path="/my2cts" element={<My2ctsPage />} />
+            <Route path="/my2cts/:slug" element={<My2ctsDetail />} />
             <Route path="/category/:type/:category" element={<CategoryPage />} />
             <Route path="/exercise-coach" element={<ExerciseCoach />} />
             <Route path="/mindset-coach" element={<MindsetCoach />} />

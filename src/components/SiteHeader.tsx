@@ -27,9 +27,9 @@ const navItems = [
       { label: "Match Reflection", href: "/match-reflection", desc: "Post-match processing" },
     ],
   },
+  { label: "My 2cts", href: "/my2cts" },
   { label: "Community", href: "/community" },
   { label: "Dashboard", href: "/tracker" },
-  { label: "Start Here", href: "/start-here" },
 ];
 
 export function SiteHeader() {

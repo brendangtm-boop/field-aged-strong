@@ -12,6 +12,7 @@ const footerLinks = {
   ],
   Resources: [
     { label: "Editorial Library", href: "/library" },
+    { label: "My 2cts", href: "/my2cts" },
     { label: "Gear Guide", href: "/gear" },
     { label: "Community", href: "/community" },
     { label: "Daily Tracker", href: "/tracker" },
