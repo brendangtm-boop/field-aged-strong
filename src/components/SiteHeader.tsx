@@ -6,24 +6,43 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   {
-    label: "Plan",
+    label: "Train",
     children: [
-      { label: "Weekly Plan", href: "/tracker", desc: "What to do this week" },
-      { label: "Exercise Coach", href: "/exercise-coach", desc: "AI-powered sessions" },
-      { label: "Mindset Coach", href: "/mindset-coach", desc: "Personal guidance" },
-      { label: "Start Here", href: "/start-here", desc: "New player onboarding" },
+      { label: "Training Hub", href: "/training", desc: "Programs & workouts" },
+      { label: "Eli — Exercise Coach", href: "/exercise-coach", desc: "AI-powered sessions" },
+      { label: "Workout Library", href: "/training", desc: "All articles & guides" },
+      { label: "Return to Play", href: "/recovery", desc: "Post-injury programs" },
     ],
   },
-  { label: "Train", href: "/training" },
-  { label: "Recover", href: "/recovery" },
   {
-    label: "Play",
+    label: "Recover",
     children: [
-      { label: "Match Reflection", href: "/match-reflection", desc: "Post-match processing" },
-      { label: "Mindset Hub", href: "/mindset", desc: "Confidence & focus" },
+      { label: "Recovery Hub", href: "/recovery", desc: "Recovery protocols" },
+      { label: "Post-Match Protocols", href: "/recovery", desc: "After-game recovery" },
+      { label: "Mobility Flows", href: "/recovery", desc: "Flexibility routines" },
+      { label: "Sleep Optimization", href: "/recovery", desc: "Better sleep for recovery" },
     ],
   },
-  { label: "Progress", href: "/tracker" },
+  {
+    label: "Mindset",
+    children: [
+      { label: "Ava — Mindset Coach", href: "/mindset-coach", desc: "Dedicated mindset coaching" },
+      { label: "Pre-Match Focus", href: "/mindset", desc: "Mental preparation" },
+      { label: "Confidence Building", href: "/mindset", desc: "Rebuild self-belief" },
+      { label: "Editorial Library", href: "/articles", desc: "In-depth articles" },
+    ],
+  },
+  { label: "Full Approach", href: "/beyond" },
+  {
+    label: "More",
+    children: [
+      { label: "Community", href: "/community", desc: "Connect with players" },
+      { label: "Nutrition Hub", href: "/nutrition", desc: "Fuel the 40+ body" },
+      { label: "Gear Guide", href: "/gear", desc: "Kit that actually matters" },
+      { label: "My2¢s", href: "/my2cts", desc: "Peer takes from the pitch" },
+    ],
+  },
+  { label: "Pricing", href: "/pricing" },
 ];
 
 export function SiteHeader() {
@@ -70,7 +89,7 @@ export function SiteHeader() {
                   <div className="bg-card rounded-xl border border-border/50 shadow-elevated p-1.5 min-w-[220px]">
                     {item.children.map((child) => (
                       <Link
-                        key={child.href}
+                        key={child.label}
                         to={child.href}
                         className={cn(
                           "block px-3.5 py-2.5 rounded-lg transition-colors",
@@ -91,7 +110,7 @@ export function SiteHeader() {
                 className={cn(
                   "px-3.5 py-2 text-sm font-medium rounded-lg transition-colors",
                   location.pathname === item.href
-                    ? (scrolled ? "text-primary" : "text-primary-foreground")
+                    ? (scrolled ? "text-accent" : "text-gold-light")
                     : (scrolled ? "text-muted-foreground hover:text-foreground" : "text-primary-foreground/70 hover:text-primary-foreground")
                 )}
               >
@@ -108,8 +127,14 @@ export function SiteHeader() {
           )}>
             <Search className="h-[18px] w-[18px]" />
           </button>
+          <Link to="/auth">
+            <Button variant="ghost" size="sm" className={cn(scrolled ? "text-foreground" : "text-primary-foreground")}>Sign In</Button>
+          </Link>
           <Link to="/membership">
             <Button variant="gold" size="sm" className="shadow-glow">Join Free</Button>
+          </Link>
+          <Link to="/start-here">
+            <Button variant="gold" size="sm" className="shadow-glow">Start Here</Button>
           </Link>
         </div>
 
@@ -130,7 +155,7 @@ export function SiteHeader() {
                   <p className="px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">{item.label}</p>
                   {item.children.map((child) => (
                     <Link
-                      key={child.href}
+                      key={child.label}
                       to={child.href}
                       className={cn(
                         "block px-3 py-3 rounded-lg transition-colors",
@@ -155,9 +180,15 @@ export function SiteHeader() {
                 </Link>
               )
             )}
-            <div className="pt-4 border-t border-border/50">
+            <div className="pt-4 border-t border-border/50 space-y-2">
+              <Link to="/auth">
+                <Button variant="outline" className="w-full">Sign In</Button>
+              </Link>
               <Link to="/membership">
-                <Button variant="gold" className="w-full shadow-glow">Start Your System</Button>
+                <Button variant="gold" className="w-full shadow-glow">Join Free</Button>
+              </Link>
+              <Link to="/start-here">
+                <Button variant="gold" className="w-full shadow-glow">Start Here</Button>
               </Link>
             </div>
           </nav>
