@@ -28,7 +28,6 @@ const navItems = [
 
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
@@ -59,38 +58,31 @@ export function SiteHeader() {
         <nav className="hidden lg:flex items-center gap-0.5">
           {navItems.map((item) =>
             item.children ? (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => setOpenDropdown(item.label)}
-                onMouseLeave={() => setOpenDropdown(null)}
-              >
+              <div key={item.label} className="relative group">
                 <button className={cn(
                   "flex items-center gap-1 px-3.5 py-2 text-sm font-medium transition-colors rounded-lg",
                   scrolled ? "text-muted-foreground hover:text-foreground" : "text-primary-foreground/70 hover:text-primary-foreground"
                 )}>
                   {item.label}
-                  <ChevronDown className={cn("h-3 w-3 transition-transform", openDropdown === item.label && "rotate-180")} />
+                  <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                 </button>
-                {openDropdown === item.label && (
-                  <div className="absolute top-full left-0 pt-2">
-                    <div className="bg-card rounded-xl border border-border/50 shadow-elevated p-1.5 min-w-[220px]">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          to={child.href}
-                          className={cn(
-                            "block px-3.5 py-2.5 rounded-lg transition-colors",
-                            location.pathname === child.href ? "bg-primary/5" : "hover:bg-muted/50"
-                          )}
-                        >
-                          <p className={cn("text-sm font-medium", location.pathname === child.href ? "text-primary" : "text-foreground")}>{child.label}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">{child.desc}</p>
-                        </Link>
-                      ))}
-                    </div>
+                <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150">
+                  <div className="bg-card rounded-xl border border-border/50 shadow-elevated p-1.5 min-w-[220px]">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        to={child.href}
+                        className={cn(
+                          "block px-3.5 py-2.5 rounded-lg transition-colors",
+                          location.pathname === child.href ? "bg-primary/5" : "hover:bg-muted/50"
+                        )}
+                      >
+                        <p className={cn("text-sm font-medium", location.pathname === child.href ? "text-primary" : "text-foreground")}>{child.label}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{child.desc}</p>
+                      </Link>
+                    ))}
                   </div>
-                )}
+                </div>
               </div>
             ) : (
               <Link
